@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Legislativ - Demo</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 40px;
+            background: #f5f5f5;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #1976d2;
+            border-bottom: 3px solid #1976d2;
+            padding-bottom: 10px;
+        }
+        .demo-section {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            border-left: 4px solid #1976d2;
+        }
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 14px;
+            margin: 15px 0;
+        }
+        .highlight {
+            background: #fff3cd;
+            padding: 15px;
+            border: 1px solid #ffeaa7;
+            border-radius: 4px;
+            margin: 15px 0;
+        }
+        .examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .example-card {
+            background: white;
+            padding: 20px;
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .button {
+            background: #1976d2;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 10px 10px 10px 0;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.2s;
+        }
+        .button:hover {
+            background: #1565c0;
+        }
+        .config-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .config-table th,
+        .config-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .config-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏛️ Chat Legislativ - Demo Integrat</h1>
+        
+        <p>Bun venit la demonstrația widget-ului Chat Legislativ! Acest sistem oferă asistență AI pentru întrebări despre legislația fiscală locală pentru primăriile din România.</p>
+
+        <div class="highlight">
+            <strong>👀 Vezi chat-ul în acțiune!</strong> 
+            Butonul de chat este deja activ în colțul din dreapta jos al acestei pagini. Faceți click pe el pentru a testa funcționalitatea.
+        </div>
+
+        <div class="demo-section">
+            <h2>🚀 Integrare Rapidă</h2>
+            <p>Pentru a integra widget-ul pe site-ul primăriei, adăugați următoarele linii de cod:</p>
+
+            <div class="code-block">
+&lt;!-- Adăugați în &lt;head&gt; --&gt;
+&lt;link rel="stylesheet" href="https://your-domain.com/widget/fiscal-chat-widget.css"&gt;
+
+&lt;!-- Adăugați înainte de &lt;/body&gt; --&gt;
+&lt;script 
+    src="https://your-domain.com/widget/fiscal-chat-widget.js"
+    data-chat-legislativ
+    data-municipality-domain="primaria-bucuresti.ro"
+    data-api-url="https://your-api-domain.com/api/v1"
+    data-title="Asistent Fiscal Primăria București"
+    data-welcome-message="Bună ziua! Vă pot ajuta cu întrebări despre taxele și impozitele locale."
+&gt;&lt;/script&gt;
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2>⚙️ Opțiuni de Configurare</h2>
+            <table class="config-table">
+                <thead>
+                    <tr>
+                        <th>Parametru</th>
+                        <th>Descriere</th>
+                        <th>Valoare Implicită</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>data-api-url</code></td>
+                        <td>URL-ul API-ului backend</td>
+                        <td>http://localhost:8000/api/v1</td>
+                    </tr>
+                    <tr>
+                        <td><code>data-municipality-domain</code></td>
+                        <td>Domeniul primăriei pentru identificare automată</td>
+                        <td>window.location.hostname</td>
+                    </tr>
+                    <tr>
+                        <td><code>data-municipality-id</code></td>
+                        <td>ID-ul specific al primăriei (alternativă la domain)</td>
+                        <td>null</td>
+                    </tr>
+                    <tr>
+                        <td><code>data-primary-color</code></td>
+                        <td>Culoarea principală a widget-ului</td>
+                        <td>#1976d2</td>
+                    </tr>
+                    <tr>
+                        <td><code>data-title</code></td>
+                        <td>Titlul afișat în header-ul chat-ului</td>
+                        <td>Asistent Legislativ</td>
+                    </tr>
+                    <tr>
+                        <td><code>data-welcome-message</code></td>
+                        <td>Mesajul de bun venit</td>
+                        <td>Mesaj standard despre taxe și impozite</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="demo-section">
+            <h2>💡 Exemple de Întrebări</h2>
+            <p>Iată câteva exemple de întrebări pe care le puteți testa:</p>
+            
+            <div class="examples">
+                <div class="example-card">
+                    <h4>🏠 Taxe pe Clădiri</h4>
+                    <p>"Care este taxa pe clădiri pentru anul 2024?"</p>
+                    <p>"Cum se calculează impozitul pe clădiri?"</p>
+                </div>
+                
+                <div class="example-card">
+                    <h4>🚗 Taxe Auto</h4>
+                    <p>"Cât costă taxa auto pentru o mașină de 1.6L?"</p>
+                    <p>"Când se plătește taxa auto?"</p>
+                </div>
+                
+                <div class="example-card">
+                    <h4>🏡 Impozit pe Teren</h4>
+                    <p>"Cum se calculează impozitul pe teren?"</p>
+                    <p>"Care sunt scutirile de impozit pe teren?"</p>
+                </div>
+                
+                <div class="example-card">
+                    <h4>📝 Proceduri</h4>
+                    <p>"Unde pot plăti taxele locale?"</p>
+                    <p>"Ce documente trebuie pentru scutirea de taxe?"</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2>🎯 Funcționalități</h2>
+            <ul>
+                <li><strong>RAG (Retrieval-Augmented Generation)</strong> - Răspunsuri bazate pe documente oficiale</li>
+                <li><strong>Citarea surselor</strong> - Fiecare răspuns include referințe la documentele sursă</li>
+                <li><strong>Contextul conversației</strong> - Asistentul își amintește conversația curentă</li>
+                <li><strong>Responsive design</strong> - Funcționează pe desktop și mobile</li>
+                <li><strong>Personalizare</strong> - Culori și mesaje personalizabile pentru fiecare primărie</li>
+                <li><strong>Multi-tenant</strong> - Suport pentru mai multe primării cu documente diferite</li>
+            </ul>
+        </div>
+
+        <div class="demo-section">
+            <h2>🔧 Configurare Avansată (JavaScript)</h2>
+            <p>Pentru configurare programatică:</p>
+            
+            <div class="code-block">
+// Inițializare manuală
+const chatWidget = window.ChatLegislativWidget.init({
+    apiUrl: 'https://your-api-domain.com/api/v1',
+    municipalityId: 'uuid-here',
+    primaryColor: '#2196f3',
+    title: 'Asistent Fiscal Personalizat',
+    welcomeMessage: 'Mesaj personalizat de bun venit!',
+    enableSources: true,
+    enableTyping: true
+});
+
+// Accesare instanță existentă
+const widget = window.ChatLegislativWidget.getInstance();
+
+// Distrugere widget
+window.ChatLegislativWidget.destroy();
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2>📊 Admin Panel</h2>
+            <p>Sistemul include un admin panel complet pentru:</p>
+            <ul>
+                <li>Gestionarea primăriilor</li>
+                <li>Upload și asocierea documentelor</li>
+                <li>Monitorizarea conversațiilor</li>
+                <li>Statistici și analiză</li>
+            </ul>
+            <a href="/admin" class="button">Acces Admin Panel</a>
+        </div>
+
+        <div class="demo-section">
+            <h2>🛠️ Arhitectura Sistemului</h2>
+            <ul>
+                <li><strong>Backend:</strong> FastAPI + PostgreSQL + pgvector</li>
+                <li><strong>AI Model:</strong> Ollama cu Llama 3.2 3B (local)</li>
+                <li><strong>Embeddings:</strong> sentence-transformers (multilingv pentru română)</li>
+                <li><strong>Frontend Admin:</strong> React + Material-UI</li>
+                <li><strong>Widget:</strong> Vanilla JavaScript (fără dependențe)</li>
+                <li><strong>Containerizare:</strong> Docker + Docker Compose</li>
+            </ul>
+        </div>
+
+        <div class="highlight">
+            <strong>🔗 Linkuri Utile:</strong><br>
+            <a href="/docs" class="button">Documentație API</a>
+            <a href="/health" class="button">Status Sistem</a>
+            <a href="https://github.com/your-repo/chat-legislativ" class="button">Cod Sursă</a>
+        </div>
+    </div>
+
+    <!-- Chat Widget Integration -->
+    <script 
+        src="working-chat-widget.js"
+        data-chat-legislativ
+        data-municipality-domain="pmb.ro"
+        data-api-url="http://localhost/api/v1"
+        data-title="Asistent Fiscal Demo"
+        data-welcome-message="Bună ziua! Sunt asistentul AI pentru demonstrația sistemului Chat Legislativ. Selectați un topic pentru a începe!"
+        data-primary-color="#1976d2"
+    ></script>
+    
+    <!-- Force CSS reload -->
+    <link rel="stylesheet" href="fiscal-chat-widget.css?v=2025">
+</body>
+</html>

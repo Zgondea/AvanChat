@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Login API</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <h1>Test Login API</h1>
+    <button onclick="testLogin()">Test Login</button>
+    <div id="result"></div>
+
+    <script>
+        async function testLogin() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = 'Testing...';
+            
+            try {
+                console.log('Testing login...');
+                
+                const response = await axios.post('http://localhost/api/v1/admin/login', {
+                    email: 'admin@chatlegislativ.ro',
+                    password: 'admin123'
+                }, {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                console.log('Success:', response.data);
+                resultDiv.innerHTML = `<pre>SUCCESS:\n${JSON.stringify(response.data, null, 2)}</pre>`;
+                
+            } catch (error) {
+                console.error('Error:', error);
+                resultDiv.innerHTML = `<pre>ERROR:\n${JSON.stringify({
+                    message: error.message,
+                    status: error.response?.status,
+                    data: error.response?.data
+                }, null, 2)}</pre>`;
+            }
+        }
+    </script>
+</body>
+</html>
