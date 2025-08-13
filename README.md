@@ -129,7 +129,3 @@ Integrează chat-ul pe site-ul primăriei cu un simplu script:
 - 📖 Docs: Vezi ghidurile de deployment
 
 ---
-
-🤖 **Generat cu [Claude Code](https://claude.ai/code)**
-
-**Co-Authored-By**: Claude <noreply@anthropic.com>
