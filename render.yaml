@@ -1,0 +1,32 @@
+services:
+  # Backend API
+  - type: web
+    name: avanchat-backend
+    env: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    env_vars:
+      - key: ENVIRONMENT
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: avanchat-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+    healthCheckPath: /health
+
+  # Static website pentru widget
+  - type: web
+    name: avanchat-widget
+    env: static
+    buildCommand: echo "No build needed"
+    staticPublishPath: ./widget
+    plan: free
+
+# Database PostgreSQL gratuit
+databases:
+  - name: avanchat-db
+    databaseName: avanchat
+    user: avanchat_user
+    plan: free
