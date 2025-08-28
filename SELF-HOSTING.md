@@ -1,141 +1,126 @@
-# 🏠 Self-Hosting pe Calculatorul Personal - AvanChat
+# 🏠 AvanChat - Setup Automat pe Calculatorul Tău
 
-Ghid pentru deploy **100% GRATUIT** pe calculatorul tău personal (Windows, macOS, Linux).
+## 🎉 **Deploy în 30 secunde - 100% GRATUIT & AUTOMAT**
 
-## 🎯 De ce Self-Hosting?
+### 🚀 **Un singur command pentru toate sistemele:**
 
-- ✅ **0 COSTURI** - doar calculatorul tău
-- ✅ **Date private** - totul rămâne local
-- ✅ **Control total** - nu depinzi de nimeni
-- ✅ **Acces LAN** - toată familia poate folosi
-- ✅ **Testare perfectă** - pentru dezvoltare
-
-## 📋 Cerințe Minime
-
-- **RAM**: 8GB (Windows/macOS), 4GB (Linux)  
-- **Storage**: 10GB liberi
-- **Internet**: Conexiune stabilă
-- **OS**: Windows 10+, macOS 10.14+, Ubuntu 18.04+
-
-## 🖥️ Windows (Opțiunea 1)
-
-### Pas 1: Instalare Docker Desktop
 ```bash
-# Download de la: https://www.docker.com/products/docker-desktop/
-# Instalează și pornește Docker Desktop
+git clone https://github.com/Zgondea/AvanChat.git
+cd AvanChat  
+docker-compose up --build
+
+# Gata! 🎯
+# ✅ Toate serviciile pornesc automat
+# ✅ Baza de date se creează singură
+# ✅ Admin user: admin@chatlegislativ.ro / admin123
+# ✅ Zero configurare necesară!
 ```
 
-### Pas 2: Setup aplicație
-```bash
-# Deschide PowerShell ca Administrator
+## 🎯 **De ce Self-Hosting Automat?**
+
+- 🚀 **Setup în 30 secunde** - fără configurare manuală
+- ✅ **0 COSTURI** - doar calculatorul tău
+- ✅ **Date 100% private** - totul rămâne local  
+- ✅ **Control total** - modifici codul cum vrei
+- ✅ **Acces din toată casa** - prin IP local
+- ✅ **Perfect pentru testare** - development instant
+
+## 📋 **Cerințe (Minime)**
+
+- **RAM**: 4GB+ (8GB recomandat)
+- **Storage**: 5GB liberi
+- **OS**: Windows 10+, macOS 10.14+, Ubuntu 18.04+
+- **Docker**: Se instalează automat pe majoritatea sistemelor
+
+## 🖥️ **Windows - Setup Automat Complet**
+
+### 🎯 **One-Step Setup (Recomandat)**
+```powershell
+# 1. Instalează Docker Desktop (dacă nu îl ai)
+# Download: https://www.docker.com/products/docker-desktop/
+
+# 2. Deschide PowerShell și rulează:
 cd C:\
 git clone https://github.com/Zgondea/AvanChat.git
 cd AvanChat
+docker-compose up --build
 
-# Creare .env pentru Windows
-copy .env.example .env
-notepad .env  # editează parolele
+# Gata! 🎉 Tot ce ai nevoie este gata automat:
+# ✅ PostgreSQL + toate tabelele
+# ✅ Admin user creat (admin@chatlegislativ.ro / admin123)  
+# ✅ Frontend la http://localhost
+# ✅ API la http://localhost:8000
+# ✅ Widget demo la http://localhost/municipality-demo
 ```
 
-### Pas 3: Pornire aplicație
-```bash
-# În PowerShell
-docker-compose -f docker-compose.prod.yml up -d
-
-# Verificare
-docker ps
+### 🤖 **Instalare Model AI (Opțional)**
+```powershell
+# Pentru răspunsuri AI mai bune (după ce aplicația pornește)
+docker exec chat_legislativ_ollama ollama pull gemma2:2b
 ```
 
-### Pas 4: Setup model AI
+## 🍎 **macOS - Setup Automat Complet**
+
+### 🚀 **One-Command Setup**
 ```bash
-# Așteaptă 2-3 minute ca serviciile să pornească
-docker exec avanchat_ollama ollama pull gemma2:2b
-```
-
-**Aplicația va fi disponibilă la:**
-- Frontend: http://localhost
-- API: http://localhost:8000  
-- Widget: http://localhost/widget/demo.html
-
-## 🍎 macOS (Opțiunea 2)
-
-### Pas 1: Instalare dependențe
-```bash
-# Instalare Docker Desktop pentru Mac
-# Download: https://www.docker.com/products/docker-desktop/
-
-# Sau prin Homebrew
+# 1. Instalează Docker (dacă nu îl ai)
 brew install --cask docker
-```
+# Sau download: https://www.docker.com/products/docker-desktop/
 
-### Pas 2: Setup aplicație  
-```bash
-# În Terminal
+# 2. În Terminal:
 cd ~/Desktop
 git clone https://github.com/Zgondea/AvanChat.git
-cd AvanChat
+cd AvanChat  
+docker-compose up --build
 
-# Configurare
-cp .env.example .env
-nano .env  # editează cu parolele tale
+# Rezultat automat:
+# ✅ Toate serviciile pornesc singure
+# ✅ Baza de date creată cu tot cu tabele
+# ✅ Admin user: admin@chatlegislativ.ro / admin123
+# ✅ Zero configurare manuală!
 ```
 
-### Pas 3: Pornire
+### 🤖 **Model AI (Opțional)**
 ```bash
-# Pornire aplicație
-docker-compose -f docker-compose.prod.yml up -d
-
-# Instalare model AI
-sleep 120  # Așteaptă 2 minute
-docker exec avanchat_ollama ollama pull gemma2:2b
+# Pentru performanță AI mai bună
+docker exec chat_legislativ_ollama ollama pull gemma2:2b
 ```
 
-## 🐧 Linux (Ubuntu/Debian) - Opțiunea 3
+## 🐧 **Linux (Ubuntu/Debian) - Setup Automat**
 
-### Pas 1: Instalare Docker
+### 🚀 **Script Automat Complet**
 ```bash
-# Update sistem
-sudo apt update && sudo apt upgrade -y
-
-# Instalare Docker
+# Instalare Docker + setup complet automat
 curl -fsSL https://get.docker.com | sh
 sudo usermod -aG docker $USER
+sudo apt install docker-compose -y
+
+# Logout/login sau:
 newgrp docker
 
-# Instalare Docker Compose
-sudo apt install docker-compose
-```
-
-### Pas 2: Setup aplicație
-```bash
-cd ~/
+# Setup aplicație (automat complet)
 git clone https://github.com/Zgondea/AvanChat.git
 cd AvanChat
+docker-compose up --build
 
-# Configurare .env
-cp .env.example .env
-nano .env
+# Rezultat:
+# ✅ Docker instalat
+# ✅ Toate serviciile pornite
+# ✅ Baza de date cu tabele create
+# ✅ Admin user creat automat
+# ✅ Aplicația funcțională la http://localhost
 ```
 
-Editează `.env`:
-```env
-POSTGRES_PASSWORD=local_secure_123
-REDIS_PASSWORD=redis_local_123  
-SECRET_KEY=my_super_secret_local_key
-ENVIRONMENT=development
-DEBUG=true
-```
-
-### Pas 3: Pornire
+### 🎯 **One-Liner pentru Experts**
 ```bash
-# Pornire aplicație
-docker-compose -f docker-compose.prod.yml up -d
-
-# Verificare status
-docker-compose ps
-
-# Setup model AI (poate dura 5-10 minute)
-docker exec avanchat_ollama ollama pull gemma2:2b
+# Totul într-o comandă (pentru cei aventuroși)
+curl -fsSL https://get.docker.com | sh && \
+sudo usermod -aG docker $USER && \
+sudo apt install docker-compose -y && \
+newgrp docker && \
+git clone https://github.com/Zgondea/AvanChat.git && \
+cd AvanChat && \
+docker-compose up --build
 ```
 
 ## 🌐 Acces din Rețea (Opțional)
