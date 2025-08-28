@@ -27,6 +27,13 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
+    console.error('API Error:', {
+      status: error.response?.status,
+      data: error.response?.data,
+      url: error.config?.url,
+      method: error.config?.method,
+    });
+    
     if (error.response?.status === 401) {
       removeAuthToken();
       window.location.href = '/login';
@@ -37,8 +44,8 @@ api.interceptors.response.use(
 
 // Auth API
 export const authAPI = {
-  login: (credentials) => api.post('/admin/login', credentials),
-  getCurrentUser: () => api.get('/admin/me'),
+  login: (credentials) => api.post('/dashboard/login', credentials),
+  getCurrentUser: () => api.get('/dashboard/me'),
 };
 
 // Municipalities API
@@ -58,6 +65,7 @@ export const documentsAPI = {
   upload: (formData) => api.post('/documents/upload', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   }),
+  addUrl: (data) => api.post('/documents/add-url', data),
   delete: (id) => api.delete(`/documents/${id}`),
   bulkAssign: (data) => api.post('/documents/bulk-assign', data),
 };
@@ -73,8 +81,8 @@ export const conversationsAPI = {
 
 // Admin API
 export const adminAPI = {
-  getDashboardStats: () => api.get('/admin/dashboard'),
-  listUsers: () => api.get('/admin/users'),
+  getDashboardStats: () => api.get('/dashboard/dashboard'),
+  listUsers: () => api.get('/dashboard/users'),
 };
 
 // Chat API

@@ -4,6 +4,7 @@ from pydantic import BaseModel, Field
 from typing import List, Optional, Dict, Any
 import uuid
 import logging
+import json
 
 from app.core.database import get_db
 from app.models.municipality import Municipality
@@ -124,7 +125,7 @@ async def chat_endpoint(
             sources=rag_response["sources"],
             message_metadata={
                 "confidence": rag_response["confidence"],
-                "model_used": "llama3.2:3b"
+                "model_used": "gemma2:2b"
             }
         )
         db.add(assistant_message)

@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Primăria Sectorului 5 - Portal Oficial</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container">
+            <div class="top-bar-content">
+                <div class="contact-info">
+                    <span><i class="fas fa-phone"></i> 021.9548</span>
+                    <span><i class="fas fa-envelope"></i> contact@sector5.ro</span>
+                    <span><i class="fas fa-clock"></i> L-V: 08:00-16:00</span>
+                </div>
+                <div class="top-links">
+                    <a href="#" class="emergency"><i class="fas fa-exclamation-triangle"></i> Urgențe</a>
+                    <a href="http://localhost/dashboard" target="_blank" class="admin-link"><i class="fas fa-user-shield"></i> Dashboard</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <img src="image.png" alt="Din Inimă pentru Sectorul Nostru" class="logo-img" style="border-radius: 50%; width: 80px; height: 80px; object-fit: cover;">
+                    <div class="logo-text">
+                        <h1>Primăria Sectorului 5</h1>
+                        <p>Portal Oficial al Administrației Publice Locale</p>
+                    </div>
+                </div>
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="#despre">Despre Noi</a></li>
+                        <li class="dropdown">
+                            <a href="#servicii">Servicii <i class="fas fa-chevron-down"></i></a>
+                            <div class="dropdown-content">
+                                <a href="#urbanism">Urbanism</a>
+                                <a href="#taxe">Taxe și Impozite</a>
+                                <a href="#documente">Documente</a>
+                                <a href="#social">Asistență Socială</a>
+                            </div>
+                        </li>
+                        <li><a href="#proiecte">Proiecte</a></li>
+                        <li><a href="#stiri">Știri</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </nav>
+                <div class="header-actions">
+                    <button class="search-btn"><i class="fas fa-search"></i></button>
+                    <button class="menu-toggle"><i class="fas fa-bars"></i></button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Banner -->
+    <section class="hero-banner">
+        <div class="hero-slides">
+            <div class="hero-slide active" style="background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&h=600&fit=crop')">
+                <div class="hero-overlay"></div>
+                <div class="container">
+                    <div class="hero-content">
+                        <span class="hero-tag">Portal Oficial</span>
+                        <h1>PENTRU CETĂȚENII SECTORULUI 5</h1>
+                        <p>Administrația publică locală în slujba cetățenilor. Transparență, eficiență și încredere în serviciile publice.</p>
+                        <div class="hero-buttons">
+                            <a href="#servicii" class="btn btn-primary">Servicii Online</a>
+                            <a href="#contact" class="btn btn-outline">Contact Primărie</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=1200&h=600&fit=crop')">
+                <div class="hero-overlay"></div>
+                <div class="container">
+                    <div class="hero-content">
+                        <span class="hero-tag">Transparență Decizională</span>
+                        <h1>TRANSPARENȚĂ ȘI RESPONSABILITATE</h1>
+                        <p>Consultări publice, informații de interes public și participare cetățenească la procesul decizional al administrației locale.</p>
+                        <div class="hero-buttons">
+                            <a href="#" class="btn btn-primary">Consultări Publice</a>
+                            <a href="#" class="btn btn-outline">Informații Publice</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=1200&h=600&fit=crop')">
+                <div class="hero-overlay"></div>
+                <div class="container">
+                    <div class="hero-content">
+                        <span class="hero-tag">Servicii Publice</span>
+                        <h1>SERVICII MODERNE PENTRU CETĂȚENI</h1>
+                        <p>Platforme digitale integrate pentru accesarea rapidă și eficiientă a serviciilor publice locale din Sectorul 5.</p>
+                        <div class="hero-buttons">
+                            <a href="#servicii" class="btn btn-primary">Acces Servicii</a>
+                            <a href="#" class="btn btn-outline">Ghid Utilizare</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hero-navigation">
+            <button class="hero-prev"><i class="fas fa-chevron-left"></i></button>
+            <button class="hero-next"><i class="fas fa-chevron-right"></i></button>
+        </div>
+        <div class="hero-indicators">
+            <span class="indicator active" data-slide="0"></span>
+            <span class="indicator" data-slide="1"></span>
+            <span class="indicator" data-slide="2"></span>
+        </div>
+    </section>
+
+    <!-- Quick Services -->
+    <section class="quick-services">
+        <div class="container">
+            <div class="services-grid">
+                <div class="service-quick">
+                    <div class="service-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <h3>Documente Online</h3>
+                    <p>Solicitare certificate și adeverințe</p>
+                    <a href="#" class="service-link">Accesează <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="service-quick">
+                    <div class="service-icon">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <h3>Plata Taxelor</h3>
+                    <p>Plătește taxele și impozitele online</p>
+                    <a href="#" class="service-link">Plătește <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="service-quick">
+                    <div class="service-icon">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <h3>Urbanism</h3>
+                    <p>Autorizații de construire și certificate</p>
+                    <a href="#" class="service-link">Aplică <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="service-quick">
+                    <div class="service-icon">
+                        <i class="fas fa-hands-helping"></i>
+                    </div>
+                    <h3>Asistență Socială</h3>
+                    <p>Servicii și ajutoare sociale</p>
+                    <a href="#" class="service-link">Informează-te <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="service-quick">
+                    <div class="service-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h3>Asistent Legislativ</h3>
+                    <p>Consultanță pentru taxe și reglementări</p>
+                    <a href="#" class="service-link chat-trigger">Consultă <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="service-quick">
+                    <div class="service-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h3>Sesizări</h3>
+                    <p>Raportează probleme în sector</p>
+                    <a href="#" class="service-link">Raportează <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="despre" class="about-section">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-content">
+                    <span class="section-tag">Despre Sectorul 5</span>
+                    <h2>O administrație modernă în slujba cetățenilor</h2>
+                    <p>Sectorul 5 este unul dintre cele mai dinamice sectoare ale Capitalei, cu o populație de aproximativ 280.000 de locuitori și o suprafață de 30 km². Administrația noastră se concentrează pe dezvoltarea durabilă, servicii publice de calitate și implicarea activă a cetățenilor în procesul decizional.</p>
+                    
+                    <div class="about-features">
+                        <div class="feature">
+                            <i class="fas fa-users"></i>
+                            <div>
+                                <h4>280.000+</h4>
+                                <span>Locuitori</span>
+                            </div>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-building"></i>
+                            <div>
+                                <h4>15+</h4>
+                                <span>Cartiere</span>
+                            </div>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-leaf"></i>
+                            <div>
+                                <h4>40+</h4>
+                                <span>Parcuri și spații verzi</span>
+                            </div>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-graduation-cap"></i>
+                            <div>
+                                <h4>60+</h4>
+                                <span>Unități de învățământ</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="#" class="btn btn-primary">Află mai multe despre noi</a>
+                </div>
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=600&h=500&fit=crop" alt="Primăria Sectorului 5" />
+                    <div class="image-overlay">
+                        <div class="play-button">
+                            <i class="fas fa-play"></i>
+                        </div>
+                        <span>Vezi prezentarea video</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="servicii" class="services-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Servicii Publice</span>
+                <h2>Servicii complete pentru cetățeni</h2>
+                <p>Administrația Sectorului 5 oferă o gamă completă de servicii publice digitalizate pentru a facilita interacțiunea cetățenilor cu instituțiile publice.</p>
+            </div>
+            
+            <div class="services-categories">
+                <div class="category-card">
+                    <div class="category-header">
+                        <i class="fas fa-building"></i>
+                        <h3>Urbanism și Construcții</h3>
+                    </div>
+                    <div class="category-services">
+                        <a href="#">Autorizații de construire</a>
+                        <a href="#">Certificate de urbanism</a>
+                        <a href="#">Avize tehnice de specialitate</a>
+                        <a href="#">Autorizații de desființare</a>
+                        <a href="#">Certificat de nomenclatură stradală</a>
+                    </div>
+                    <div class="category-footer">
+                        <span class="processing-time"><i class="fas fa-clock"></i> 5-10 zile lucrătoare</span>
+                        <a href="#" class="category-link">Vezi toate <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <div class="category-card">
+                    <div class="category-header">
+                        <i class="fas fa-calculator"></i>
+                        <h3>Taxe și Impozite Locale</h3>
+                    </div>
+                    <div class="category-services">
+                        <a href="#">Impozit pe clădiri</a>
+                        <a href="#">Impozit pe teren</a>
+                        <a href="#">Taxa pentru autovehicule</a>
+                        <a href="#">Taxe locale speciale</a>
+                        <a href="#">Certificate fiscale</a>
+                    </div>
+                    <div class="category-footer">
+                        <span class="processing-time"><i class="fas fa-clock"></i> Online instant</span>
+                        <a href="#" class="category-link">Calculează taxele <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <div class="category-card">
+                    <div class="category-header">
+                        <i class="fas fa-file-contract"></i>
+                        <h3>Documente și Certificate</h3>
+                    </div>
+                    <div class="category-services">
+                        <a href="#">Certificate de atestare fiscală</a>
+                        <a href="#">Adeverințe diverse</a>
+                        <a href="#">Copii conforme după acte</a>
+                        <a href="#">Certificate de rezidență</a>
+                        <a href="#">Apostile și supralegalizări</a>
+                    </div>
+                    <div class="category-footer">
+                        <span class="processing-time"><i class="fas fa-clock"></i> 1-3 zile lucrătoare</span>
+                        <a href="#" class="category-link">Solicită <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <div class="category-card">
+                    <div class="category-header">
+                        <i class="fas fa-heart"></i>
+                        <h3>Asistență Socială</h3>
+                    </div>
+                    <div class="category-services">
+                        <a href="#">Ajutoare sociale</a>
+                        <a href="#">Servicii pentru vârstnici</a>
+                        <a href="#">Protecția copilului</a>
+                        <a href="#">Persoane cu dizabilități</a>
+                        <a href="#">Cantina socială</a>
+                    </div>
+                    <div class="category-footer">
+                        <span class="processing-time"><i class="fas fa-clock"></i> Evaluare în 7 zile</span>
+                        <a href="#" class="category-link">Aplică <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- News Section -->
+    <section id="stiri" class="news-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Ultimele Știri</span>
+                <h2>Noutăți din Sectorul 5</h2>
+            </div>
+
+            <div class="news-grid">
+                <article class="news-featured">
+                    <div class="news-image">
+                        <img src="https://images.unsplash.com/photo-1567427018141-0584cfcbf1b8?w=600&h=400&fit=crop" alt="Parc nou">
+                        <div class="news-category">Investiții</div>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-meta">
+                            <span class="news-date"><i class="fas fa-calendar"></i> 15 Ianuarie 2024</span>
+                            <span class="news-author"><i class="fas fa-user"></i> Primăria S5</span>
+                        </div>
+                        <h3><a href="#">Se deschide cel mai mare parc din Sectorul 5 - Parcul Libertății</a></h3>
+                        <p>După doi ani de lucrări intensive, Parcul Libertății își deschide porțile pentru cetățeni. Cu o suprafață de 15 hectare, noul parc include zone de recreere pentru copii, piste de alergare, lac artificial și amfiteatru în aer liber.</p>
+                        <div class="news-tags">
+                            <span class="tag">Parcuri</span>
+                            <span class="tag">Investiții</span>
+                            <span class="tag">Comunitate</span>
+                        </div>
+                    </div>
+                </article>
+
+                <div class="news-sidebar">
+                    <article class="news-small">
+                        <div class="news-small-image">
+                            <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=150&h=100&fit=crop" alt="Digitalizare">
+                        </div>
+                        <div class="news-small-content">
+                            <span class="news-date">12 Ianuarie 2024</span>
+                            <h4><a href="#">Platformă digitală pentru plata taxelor locale</a></h4>
+                            <p>Noul sistem permite plata online a tuturor taxelor locale prin card bancar sau transfer bancar.</p>
+                        </div>
+                    </article>
+
+                    <article class="news-small">
+                        <div class="news-small-image">
+                            <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=150&h=100&fit=crop" alt="Transport">
+                        </div>
+                        <div class="news-small-content">
+                            <span class="news-date">10 Ianuarie 2024</span>
+                            <h4><a href="#">Modernizarea rețelei de transport în comun</a></h4>
+                            <p>20 de autobuze noi ecologice vor circula pe traseele din sectorul 5 începând cu luna februarie.</p>
+                        </div>
+                    </article>
+
+                    <article class="news-small">
+                        <div class="news-small-image">
+                            <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=150&h=100&fit=crop" alt="Sănătate">
+                        </div>
+                        <div class="news-small-content">
+                            <span class="news-date">08 Ianuarie 2024</span>
+                            <h4><a href="#">Campanie gratuită de vaccinare anti-gripală</a></h4>
+                            <p>Cetățenii cu vârsta peste 65 de ani se pot vaccina gratuit în toate centrele medicale din sector.</p>
+                        </div>
+                    </article>
+
+                    <article class="news-small">
+                        <div class="news-small-image">
+                            <img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=150&h=100&fit=crop" alt="Educație">
+                        </div>
+                        <div class="news-small-content">
+                            <span class="news-date">05 Ianuarie 2024</span>
+                            <h4><a href="#">Program de burse pentru studenții cu rezultate excepționale</a></h4>
+                            <p>Primăria acordă burse de merit în valoare de 1000 lei/lună pentru studenții din sectorul 5.</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+
+            <div class="news-footer">
+                <a href="#" class="btn btn-outline">Vezi toate știrile <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h2>Contactează Primăria Sectorului 5</h2>
+                    <p>Suntem aici să te ajutăm. Contactează-ne prin oricare dintre modalitățile de mai jos.</p>
+
+                    <div class="contact-methods">
+                        <div class="contact-method">
+                            <div class="method-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="method-info">
+                                <h4>Adresa principală</h4>
+                                <p>Calea 13 Septembrie nr. 267<br>Sector 5, București, România</p>
+                            </div>
+                        </div>
+
+                        <div class="contact-method">
+                            <div class="method-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="method-info">
+                                <h4>Telefon & Fax</h4>
+                                <p>Tel: 021.9548 (Centrul de Contact)<br>Fax: 021.410.23.03</p>
+                            </div>
+                        </div>
+
+                        <div class="contact-method">
+                            <div class="method-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="method-info">
+                                <h4>Email oficial</h4>
+                                <p>contact@sector5.ro<br>primarie@sector5.ro</p>
+                            </div>
+                        </div>
+
+                        <div class="contact-method">
+                            <div class="method-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="method-info">
+                                <h4>Program de lucru</h4>
+                                <p>Luni - Vineri: 08:00 - 16:00<br>Sâmbătă: 09:00 - 13:00 (urgențe)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="emergency-contact">
+                        <div class="emergency-box">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <div>
+                                <h4>Linie de urgență 24/7</h4>
+                                <p><strong>0800.SECTOR5</strong> - Apeluri gratuite pentru situații de urgență</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-map">
+                    <div class="map-container">
+                        <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?w=600&h=400&fit=crop" alt="Locația Primăriei" class="map-placeholder">
+                        <div class="map-overlay">
+                            <i class="fas fa-map-marked-alt"></i>
+                            <span>Click pentru a vizualiza harta interactivă</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-grid">
+                    <div class="footer-section">
+                        <div class="footer-logo">
+                            <img src="https://via.placeholder.com/60x60/ffffff/2c5aa0?text=S5" alt="Logo Sectorul 5">
+                            <div>
+                                <h4>Primăria Sectorului 5</h4>
+                                <p>Administrație modernă pentru cetățeni</p>
+                            </div>
+                        </div>
+                        <p class="footer-description">
+                            Ne dedicăm să oferim servicii publice de înaltă calitate și să contribuim la dezvoltarea durabilă a comunității noastre.
+                        </p>
+                        <div class="social-links">
+                            <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="footer-section">
+                        <h4>Servicii Rapide</h4>
+                        <ul class="footer-links">
+                            <li><a href="#">Plata taxelor online</a></li>
+                            <li><a href="#">Documente electronice</a></li>
+                            <li><a href="#">Autorizații urbanism</a></li>
+                            <li><a href="#">Asistență socială</a></li>
+                            <li><a href="#">Sesizări cetățeni</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-section">
+                        <h4>Informații Utile</h4>
+                        <ul class="footer-links">
+                            <li><a href="#">Organigramă instituțională</a></li>
+                            <li><a href="#">Buget și execuție</a></li>
+                            <li><a href="#">Achiziții publice</a></li>
+                            <li><a href="#">Transparență decizională</a></li>
+                            <li><a href="http://localhost/dashboard" target="_blank">Administrare sistem</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-section">
+                        <h4>Contact Direct</h4>
+                        <div class="footer-contact">
+                            <p><i class="fas fa-phone"></i> <strong>021.9548</strong></p>
+                            <p><i class="fas fa-envelope"></i> contact@sector5.ro</p>
+                            <p><i class="fas fa-map-marker-alt"></i> Calea 13 Septembrie nr. 267</p>
+                        </div>
+                        <div class="newsletter">
+                            <h5>Newsletter</h5>
+                            <p>Abonează-te pentru noutăți</p>
+                            <div class="newsletter-form">
+                                <input type="email" placeholder="Email-ul tău">
+                                <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <div class="copyright">
+                        <p>&copy; 2024 Primăria Sectorului 5 București. Toate drepturile rezervate.</p>
+                        <p>Realizat cu <i class="fas fa-heart"></i> pentru comunitatea Sectorului 5</p>
+                    </div>
+                    <div class="footer-bottom-links">
+                        <a href="#">Politica de confidențialitate</a>
+                        <a href="#">Termeni și condiții</a>
+                        <a href="#">Cookies</a>
+                        <a href="#">GDPR</a>
+                        <a href="#">Hartă site</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Chat Widget Integration -->
+    <script src="/widget/widget.js" 
+            data-chat-legislativ
+            data-api-url="http://localhost/api/v1"
+            data-municipality-domain="pmb.ro"
+            data-title="Asistent Legislativ S5"
+            data-welcome-message="Bună ziua! Sunt asistentul legislativ al Primăriei Sectorului 5. Vă pot consulta despre taxe locale, reglementări urbanistice și proceduri administrative."
+            data-primary-color="#1a5490"></script>
+    <script>
+        // Debug check
+        console.log('📄 HTML script executing...');
+        
+        // Initialize the chat widget for municipality
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🌐 Initializing Sector 5 municipality website...');
+            
+            // Check if modern widget loaded
+            setTimeout(() => {
+                if (window.ChatLegislativWidget) {
+                    console.log('✅ Modern widget API available:', window.ChatLegislativWidget);
+                } else {
+                    console.error('❌ Modern widget not found on window');
+                }
+            }, 2000);
+            
+            // Widget se auto-inițializează cu data attributes
+            setTimeout(() => {
+                // Add trigger for chat from quick services
+                const chatTriggers = document.querySelectorAll('.chat-trigger');
+                chatTriggers.forEach(trigger => {
+                    trigger.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        // Get widget instance and open it
+                        const widget = window.ChatLegislativWidget?.getInstance();
+                        if (widget) {
+                            widget.open();
+                        } else {
+                            console.log('Widget instance not found, trying button simulation...');
+                            const chatButton = document.querySelector('button[style*="position: fixed"]');
+                            if (chatButton) {
+                                chatButton.click();
+                            }
+                        }
+                    });
+                });
+                
+                console.log('✅ Sector 5 chat widget configured');
+            }, 1000);
+
+            // Hero slider functionality
+            const slides = document.querySelectorAll('.hero-slide');
+            const indicators = document.querySelectorAll('.indicator');
+            const prevBtn = document.querySelector('.hero-prev');
+            const nextBtn = document.querySelector('.hero-next');
+            let currentSlide = 0;
+            let slideInterval;
+
+            function showSlide(index) {
+                slides.forEach(slide => slide.classList.remove('active'));
+                indicators.forEach(indicator => indicator.classList.remove('active'));
+                
+                slides[index].classList.add('active');
+                indicators[index].classList.add('active');
+                currentSlide = index;
+            }
+
+            function nextSlide() {
+                const next = (currentSlide + 1) % slides.length;
+                showSlide(next);
+            }
+
+            function prevSlide() {
+                const prev = (currentSlide - 1 + slides.length) % slides.length;
+                showSlide(prev);
+            }
+
+            function startSlideshow() {
+                slideInterval = setInterval(nextSlide, 5000);
+            }
+
+            function stopSlideshow() {
+                clearInterval(slideInterval);
+            }
+
+            // Event listeners
+            nextBtn.addEventListener('click', () => {
+                nextSlide();
+                stopSlideshow();
+                startSlideshow();
+            });
+
+            prevBtn.addEventListener('click', () => {
+                prevSlide();
+                stopSlideshow();
+                startSlideshow();
+            });
+
+            indicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', () => {
+                    showSlide(index);
+                    stopSlideshow();
+                    startSlideshow();
+                });
+            });
+
+            // Start slideshow
+            startSlideshow();
+
+            // Pause on hover
+            const heroSlides = document.querySelector('.hero-slides');
+            heroSlides.addEventListener('mouseenter', stopSlideshow);
+            heroSlides.addEventListener('mouseleave', startSlideshow);
+
+            // Mobile menu toggle
+            const menuToggle = document.querySelector('.menu-toggle');
+            const mainNav = document.querySelector('.main-nav');
+
+            menuToggle.addEventListener('click', () => {
+                mainNav.classList.toggle('active');
+                menuToggle.querySelector('i').classList.toggle('fa-bars');
+                menuToggle.querySelector('i').classList.toggle('fa-times');
+            });
+
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            console.log('✅ Sector 5 municipality website fully initialized');
+        });
+    </script>
+</body>
+</html>

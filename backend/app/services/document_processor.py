@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import os
+import re
 from typing import List, Dict, Any, Optional
 from pathlib import Path
 import uuid
@@ -68,6 +69,53 @@ class DocumentProcessor:
             
         except Exception as e:
             logger.error(f"Failed to process document {file_path}: {e}")
+            raise
+    
+    async def process_text_content(
+        self,
+        text_content: str,
+        document_id: str,
+        municipality_id: str,
+        source_name: str = "web_content"
+    ) -> List[Dict[str, Any]]:
+        """Process text content directly (for URLs) and return chunks with embeddings"""
+        try:
+            if not text_content:
+                raise ValueError("No text content provided")
+            
+            # Split into chunks
+            chunks = await self._split_into_chunks(text_content)
+            if not chunks:
+                raise ValueError("No chunks created from text content")
+            
+            # Generate embeddings for chunks
+            chunk_texts = [chunk["content"] for chunk in chunks]
+            embeddings = await self.embedding_service.encode_texts(chunk_texts)
+            
+            # Combine chunks with embeddings
+            processed_chunks = []
+            for i, (chunk, embedding) in enumerate(zip(chunks, embeddings)):
+                processed_chunk = {
+                    "document_id": document_id,
+                    "municipality_id": municipality_id,
+                    "content": chunk["content"],
+                    "embedding": embedding,
+                    "chunk_index": i,
+                    "page_number": chunk.get("page_number"),
+                    "chunk_metadata": {
+                        "char_count": len(chunk["content"]),
+                        "word_count": len(chunk["content"].split()),
+                        "source": source_name,
+                        **chunk.get("metadata", {})
+                    }
+                }
+                processed_chunks.append(processed_chunk)
+            
+            logger.info(f"Processed text content for document {document_id}: {len(processed_chunks)} chunks created")
+            return processed_chunks
+            
+        except Exception as e:
+            logger.error(f"Failed to process text content for document {document_id}: {e}")
             raise
     
     async def _extract_text(self, file_path: str) -> str:
@@ -143,11 +191,140 @@ class DocumentProcessor:
                 return file.read()
     
     async def _split_into_chunks(self, text: str) -> List[Dict[str, Any]]:
-        """Split text into overlapping chunks optimized for performance"""
+        """Split text into chunks with improved legal document handling"""
         if not text.strip():
             return []
         
-        # Simple word-based chunking for better performance
+        # Check if this appears to be a legal document
+        is_legal = self._is_legal_document(text)
+        
+        if is_legal:
+            # Use legal-specific chunking
+            chunks = self._split_legal_document(text)
+        else:
+            # Use original word-based chunking for other documents
+            chunks = self._split_word_based(text)
+        
+        return chunks if chunks else self._split_word_based(text)
+
+    def _is_legal_document(self, text: str) -> bool:
+        """Check if text appears to be a legal document"""
+        legal_indicators = ['ART.', 'ARTICOL', 'CAPITOL', 'TITLU', 'Codul fiscal', 'Legea', 'ORDONANȚĂ']
+        text_sample = text[:3000].upper()  # Check first 3000 characters
+        
+        legal_count = sum(1 for indicator in legal_indicators if indicator in text_sample)
+        return legal_count >= 2
+
+    def _split_legal_document(self, text: str) -> List[Dict[str, Any]]:
+        """Split legal documents by articles and logical sections"""
+        chunks = []
+        
+        # Split by articles first - improved regex
+        article_pattern = r'(ART\.\s*\d+[^\n]*\n(?:[^\n]*\n)*?)(?=ART\.\s*\d+|CAPITOL|TITLU|$)'
+        articles = re.findall(article_pattern, text, re.DOTALL | re.IGNORECASE)
+        
+        if not articles:
+            # Fallback: try different patterns
+            article_pattern = r'((?:ART\.|ARTICOL)\s*[^.]*\.(?:[^A][^R][^T][^.])*?)(?=(?:ART\.|ARTICOL)|$)'
+            articles = re.findall(article_pattern, text, re.DOTALL | re.IGNORECASE)
+        
+        if articles and len(articles) > 1:  # Only use if we found multiple articles
+            for i, article in enumerate(articles):
+                article = article.strip()
+                if len(article) > 50:  # Skip very short matches
+                    # If article is too long, split it further
+                    if len(article) > 2000:
+                        sub_chunks = self._split_long_article(article)
+                        for j, sub_chunk in enumerate(sub_chunks):
+                            chunks.append({
+                                "content": sub_chunk.strip(),
+                                "page_number": 1,
+                                "metadata": {
+                                    "article_number": i + 1,
+                                    "sub_chunk": j + 1 if len(sub_chunks) > 1 else None,
+                                    "document_type": "legal_article",
+                                    "word_count": len(sub_chunk.split())
+                                }
+                            })
+                    else:
+                        chunks.append({
+                            "content": article,
+                            "page_number": 1,
+                            "metadata": {
+                                "article_number": i + 1,
+                                "document_type": "legal_article",
+                                "word_count": len(article.split())
+                            }
+                        })
+        
+        return chunks
+
+    def _split_long_article(self, article: str) -> List[str]:
+        """Split long articles into smaller coherent chunks"""
+        chunks = []
+        
+        # Try to split by numbered paragraphs first: (1), (2), etc.
+        paragraphs = re.split(r'\n\s*\(\d+\)', article)
+        
+        if len(paragraphs) > 1:
+            current_chunk = ""
+            for i, paragraph in enumerate(paragraphs):
+                paragraph = paragraph.strip()
+                if not paragraph:
+                    continue
+                    
+                # Add paragraph number back if not first paragraph
+                if i > 0:
+                    paragraph = f"({i}) {paragraph}"
+                
+                # If adding this paragraph would make chunk too long, save current and start new
+                if len(current_chunk) + len(paragraph) > 1800 and current_chunk:
+                    chunks.append(current_chunk)
+                    current_chunk = paragraph
+                else:
+                    if current_chunk:
+                        current_chunk += "\n" + paragraph
+                    else:
+                        current_chunk = paragraph
+            
+            # Add final chunk
+            if current_chunk:
+                chunks.append(current_chunk)
+        
+        # If no good paragraph splits, fall back to sentence-based splitting
+        if not chunks or len(chunks) == 1:
+            return self._split_by_sentences(article, 1800)
+        
+        return chunks
+
+    def _split_by_sentences(self, text: str, max_length: int) -> List[str]:
+        """Split text by sentences, keeping chunks under max_length"""
+        # Split on sentence endings
+        sentences = re.split(r'(?<=[.!?])\s+', text)
+        chunks = []
+        current_chunk = ""
+        
+        for sentence in sentences:
+            sentence = sentence.strip()
+            if not sentence:
+                continue
+                
+            if len(current_chunk) + len(sentence) > max_length and current_chunk:
+                chunks.append(current_chunk)
+                current_chunk = sentence
+            else:
+                if current_chunk:
+                    current_chunk += " " + sentence
+                else:
+                    current_chunk = sentence
+        
+        if current_chunk:
+            chunks.append(current_chunk)
+        
+        return chunks if chunks else [text]
+
+    def _split_word_based(self, text: str) -> List[Dict[str, Any]]:
+        """Original word-based chunking for general documents"""
         words = text.split()
         chunks = []
         current_chunk = []

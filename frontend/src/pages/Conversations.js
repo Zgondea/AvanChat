@@ -81,8 +81,16 @@ function Conversations() {
   const deleteMutation = useMutation(conversationsAPI.delete, {
     onSuccess: () => {
       queryClient.invalidateQueries('conversations');
+      queryClient.invalidateQueries('conversation-analytics');
       setDialogOpen(false);
       setSelectedConversation(null);
+      // Optional: Show success message
+      console.log('Conversația a fost ștearsă cu succes');
+    },
+    onError: (error) => {
+      console.error('Eroare la ștergerea conversației:', error);
+      const errorMessage = error?.response?.data?.detail || error?.message || 'Eroare necunoscută';
+      alert(`Eroare la ștergerea conversației: ${errorMessage}\n\nVă rugăm încercați din nou sau contactați administratorul.`);
     },
   });
 
@@ -99,7 +107,8 @@ function Conversations() {
   };
 
   const handleDeleteConversation = (conversation) => {
-    if (window.confirm('Sigur doriți să ștergeți această conversație?')) {
+    if (window.confirm(`Sigur doriți să ștergeți această conversație?\n\nID: ${conversation.id.substring(0, 8)}...\nPrimăria: ${conversation.municipality?.name}\nMesaje: ${conversation.message_count}\n\nAceastă acțiune nu poate fi anulată!`)) {
+      console.log('Ștergere conversație:', conversation.id);
       deleteMutation.mutate(conversation.id);
     }
   };
@@ -185,6 +194,7 @@ function Conversations() {
             size="small"
             color="error"
             onClick={() => handleDeleteConversation(params.row)}
+            disabled={deleteMutation.isLoading}
           >
             <DeleteIcon />
           </IconButton>
@@ -430,8 +440,9 @@ function Conversations() {
             <Button
               color="error"
               onClick={() => handleDeleteConversation(conversationDetails)}
+              disabled={deleteMutation.isLoading}
             >
-              Șterge Conversația
+              {deleteMutation.isLoading ? 'Se șterge...' : 'Șterge Conversația'}
             </Button>
           )}
         </DialogActions>

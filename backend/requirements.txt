@@ -35,6 +35,11 @@ Pillow==10.1.0
 numpy==1.25.2
 pandas==2.1.4
 
+# Web scraping
+aiohttp==3.9.1
+beautifulsoup4==4.12.2
+lxml==4.9.3
+
 # Logging and monitoring
 structlog==23.2.0
 prometheus-client==0.19.0

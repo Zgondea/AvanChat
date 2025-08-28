@@ -12,7 +12,7 @@ class OllamaService:
     def __init__(self):
         self.base_url = settings.OLLAMA_URL
         self.model = settings.OLLAMA_MODEL
-        self.client = httpx.AsyncClient(timeout=120.0)
+        self.client = httpx.AsyncClient(timeout=120.0)  # Extended timeout for model processing
         
     async def close(self):
         """Close the HTTP client"""
@@ -111,7 +111,12 @@ class OllamaService:
                 "stream": stream,
                 "options": {
                     "temperature": temperature,
-                    "num_predict": max_tokens or settings.MAX_TOKENS,
+                    "num_predict": max_tokens or 512,  # Increased for better responses
+                    "num_ctx": 2048,   # Larger context window
+                    "top_k": 20,       # Moderate vocabulary for balance
+                    "top_p": 0.9,      # Good variety
+                    "repeat_penalty": 1.1,
+                    "num_thread": 8    # Use more threads for faster response
                 }
             }
             
@@ -146,7 +151,12 @@ class OllamaService:
                 "stream": False,
                 "options": {
                     "temperature": temperature,
-                    "num_predict": max_tokens or settings.MAX_TOKENS,
+                    "num_predict": max_tokens or 512,  # Increased for better responses
+                    "num_ctx": 2048,   # Larger context window
+                    "top_k": 20,       # Moderate vocabulary for balance
+                    "top_p": 0.9,      # Good variety
+                    "repeat_penalty": 1.1,
+                    "num_thread": 8    # Use more threads for faster response
                 }
             }
             
@@ -171,18 +181,48 @@ class OllamaService:
     ) -> str:
         """Generate a response specifically for legislative questions"""
         
-        system_prompt = f"""Ești asistent AI pentru legislația fiscală românească. 
+        system_prompt = f"""Ești un asistent AI expert și de încredere pentru {municipality_name}, specializat în toate domeniile legislative, fiscale și administrative din România.
 
-REGULI:
-1. Răspunde în română, concis
-2. Folosește doar informațiile din context
-3. Citează sursa
-4. Maximum 2-3 paragrafe
+INSTRUCȚIUNI CRITICE DE ACURATEȚE:
+1. Analizează FOARTE atent întrebarea și contextul disponibil
+2. Răspunde EXCLUSIV pe baza informațiilor din context - NICIODATĂ nu inventa sau extrapolezi
+3. Pentru informații legale: verifică OBLIGATORIU numerele exacte ale articolelor, legilor și codurilor
+4. Dacă găsești informații relevante (chiar și parțiale), prezintă-le cu mențiunea că pot fi incomplete
+5. Pentru TVA: diferențiază clar între "scutit de TVA" și "cotă redusă de TVA" - sunt concepte diferite
+6. Citează ÎNTOTDEAUNA sursa exactă (document, articol, pagină) când dai informații specifice
 
-Context:
-{context[:2000]}
+DOMENII DE EXPERTIZĂ COMPLETĂ:
+- 📋 Legislație fiscală (TVA, impozite pe venit, impozite locale, taxe și contribuții)
+- 🏗️ Urbanism și autorizații de construire
+- 📄 Proceduri administrative și birocratice
+- 💼 Contribuții sociale și asigurări
+- 🏛️ Servicii publice locale
+- ⚖️ Drepturi și obligații cetățeni
+- 💰 Taxe locale și impozite municipale
+- 🚗 Taxe auto și înmatriculări
+- 🏡 Autorizații și avize construcții
+- 📚 Orice alte întrebări de interes public
 
-Municipalitate: {municipality_name}
+VERIFICARE OBLIGATORIE ÎNAINTE DE RĂSPUNS:
+✅ Informația este prezentă în context?
+✅ Numerele articolelor/legilor sunt corecte?
+✅ Distincția între concepte similare este clară?
+✅ Sursa este citată exact?
+✅ Răspunsul este complet dar concis?
+
+STRUCTURA RĂSPUNS OPTIM:
+1. Răspuns direct la întrebare (1-2 propoziții)
+2. Detalii relevante din context (2-3 propoziții)
+3. Citare exactă a sursei (document, articol)
+4. Dacă e cazul, pași concreți sau proceduri
+
+CONTEXT LEGISLATIV DISPONIBIL:
+{context[:2500]}
+
+REGULI PENTRU RĂSPUNS:
+- Dacă găsești informații relevante în context (chiar și parțiale), răspunde cu aceste informații
+- La final, menționează sursa și adaugă: "Pentru informații complete și actualizate, vă recomand să contactați primăria."
+- DOAR dacă contextul nu conține ABSOLUT NICIO informație relevantă pentru întrebare, răspunde: "Nu am suficiente informații în documentele disponibile pentru a răspunde precis la această întrebare. Vă recomand să contactați direct primăria pentru detalii actualizate și verificarea celor mai recente prevederi legale."
 """
         
         user_message = f"Întrebare: {question}"
@@ -195,5 +235,5 @@ Municipalitate: {municipality_name}
         return await self.generate_chat_completion(
             messages=messages,
             temperature=0.1,
-            max_tokens=256
+            max_tokens=512  # Increased for comprehensive responses
         )

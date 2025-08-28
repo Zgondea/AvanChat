@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import {
   Box,
@@ -9,18 +9,22 @@ import {
   Paper,
   LinearProgress,
   Chip,
+  Fab,
 } from '@mui/material';
 import {
   Business as BusinessIcon,
   Description as DocumentIcon,
   Chat as ChatIcon,
   TrendingUp as TrendingIcon,
+  Refresh as RefreshIcon,
 } from '@mui/icons-material';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from 'recharts';
 
 import { adminAPI, chatAPI } from '../services/api';
 
 function Dashboard() {
+  const [refreshAnimation, setRefreshAnimation] = useState(false);
+
   // Fetch dashboard statistics
   const { data: stats, isLoading: statsLoading } = useQuery(
     'dashboard-stats',
@@ -55,7 +59,7 @@ function Dashboard() {
 
   if (statsLoading) {
     return (
-      <Box>
+      <Box sx={{ p: 3 }}>
         <Typography variant="h4" component="h1" gutterBottom>
           Dashboard
         </Typography>
@@ -68,104 +72,361 @@ function Dashboard() {
     ? (stats.processed_documents / stats.total_documents) * 100 
     : 0;
 
+  const handleRefresh = () => {
+    setRefreshAnimation(true);
+    setTimeout(() => setRefreshAnimation(false), 1000);
+  };
+
   return (
-    <Box>
-      <Typography variant="h4" component="h1" gutterBottom>
-        Dashboard
-      </Typography>
+    <Box sx={{ 
+      backgroundColor: '#fafafa',
+      minHeight: '100vh',
+      p: 3,
+    }}>
+      {/* Header */}
+      <Box sx={{ 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center',
+        mb: 4,
+        backgroundColor: 'white',
+        borderRadius: 2,
+        border: '1px solid #e0e0e0',
+        p: 3,
+        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+      }}>
+        <Box>
+          <Typography 
+            variant="h4" 
+            component="h1" 
+            sx={{ 
+              color: '#212121',
+              fontWeight: 600,
+              mb: 0.5,
+            }}
+          >
+            Dashboard Administrativ
+          </Typography>
+          <Typography 
+            variant="body1" 
+            sx={{ 
+              color: '#757575',
+              fontWeight: 400,
+            }}
+          >
+            Panou de control pentru sistemul AvanChat
+          </Typography>
+        </Box>
+        <Fab
+          color="primary"
+          size="medium"
+          onClick={handleRefresh}
+          sx={{
+            backgroundColor: '#1976d2',
+            color: 'white',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+            transform: refreshAnimation ? 'rotate(360deg)' : 'rotate(0deg)',
+            transition: 'transform 1s ease-in-out',
+            '&:hover': {
+              backgroundColor: '#1565c0',
+              transform: 'scale(1.05)',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+            }
+          }}
+        >
+          <RefreshIcon />
+        </Fab>
+      </Box>
 
       {/* Status Cards */}
-      <Grid container spacing={3} mb={4}>
+      <Grid container spacing={3} sx={{ mb: 4 }}>
         <Grid item xs={12} sm={6} md={3}>
-          <Card>
+          <Card sx={{
+            backgroundColor: 'white',
+            border: '1px solid #e0e0e0',
+            borderRadius: 2,
+            transition: 'all 0.2s ease',
+            '&:hover': {
+              boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+              transform: 'translateY(-2px)',
+            },
+          }}>
             <CardContent>
               <Box display="flex" alignItems="center" justifyContent="space-between">
                 <Box>
-                  <Typography color="textSecondary" gutterBottom>
+                  <Typography 
+                    variant="overline"
+                    sx={{ 
+                      color: '#757575',
+                      fontSize: '0.75rem',
+                      fontWeight: 600,
+                      mb: 1,
+                      display: 'block',
+                    }}
+                  >
                     Primării Active
                   </Typography>
-                  <Typography variant="h4">
+                  <Typography 
+                    variant="h3" 
+                    sx={{ 
+                      color: '#212121',
+                      fontWeight: 700,
+                      mb: 1,
+                    }}
+                  >
                     {stats?.active_municipalities || 0}
                   </Typography>
-                  <Typography variant="body2" color="textSecondary">
+                  <Typography 
+                    variant="body2" 
+                    sx={{ 
+                      color: '#757575',
+                      fontSize: '0.875rem',
+                    }}
+                  >
                     din {stats?.total_municipalities || 0} total
                   </Typography>
                 </Box>
-                <BusinessIcon sx={{ fontSize: 40, color: 'primary.main' }} />
+                <Box sx={{
+                  backgroundColor: 'rgba(25, 118, 210, 0.1)',
+                  borderRadius: '50%',
+                  p: 2,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                  <BusinessIcon sx={{ 
+                    fontSize: 40, 
+                    color: '#1976d2',
+                  }} />
+                </Box>
               </Box>
             </CardContent>
           </Card>
         </Grid>
 
         <Grid item xs={12} sm={6} md={3}>
-          <Card>
+          <Card sx={{
+            backgroundColor: 'white',
+            border: '1px solid #e0e0e0',
+            borderRadius: 2,
+            transition: 'all 0.2s ease',
+            '&:hover': {
+              boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+              transform: 'translateY(-2px)',
+            },
+          }}>
             <CardContent>
               <Box display="flex" alignItems="center" justifyContent="space-between">
-                <Box>
-                  <Typography color="textSecondary" gutterBottom>
+                <Box sx={{ width: '70%' }}>
+                  <Typography 
+                    variant="overline"
+                    sx={{ 
+                      color: '#757575',
+                      fontSize: '0.75rem',
+                      fontWeight: 600,
+                      mb: 1,
+                      display: 'block',
+                    }}
+                  >
                     Documente Procesate
                   </Typography>
-                  <Typography variant="h4">
+                  <Typography 
+                    variant="h3" 
+                    sx={{ 
+                      color: '#212121',
+                      fontWeight: 700,
+                      mb: 1,
+                    }}
+                  >
                     {stats?.processed_documents || 0}
                   </Typography>
-                  <Typography variant="body2" color="textSecondary">
+                  <Typography 
+                    variant="body2" 
+                    sx={{ 
+                      color: '#757575',
+                      fontSize: '0.875rem',
+                      mb: 2,
+                    }}
+                  >
                     din {stats?.total_documents || 0} total
                   </Typography>
-                  <LinearProgress 
-                    variant="determinate" 
-                    value={processingPercentage} 
-                    sx={{ mt: 1 }}
-                  />
+                  <Box sx={{
+                    backgroundColor: '#f5f5f5',
+                    borderRadius: '8px',
+                    p: 1,
+                    border: '1px solid #e0e0e0',
+                  }}>
+                    <LinearProgress 
+                      variant="determinate" 
+                      value={processingPercentage}
+                      sx={{ 
+                        height: 6,
+                        borderRadius: '3px',
+                        backgroundColor: '#e0e0e0',
+                        '& .MuiLinearProgress-bar': {
+                          backgroundColor: '#4caf50',
+                          borderRadius: '3px',
+                        }
+                      }}
+                    />
+                    <Typography variant="caption" sx={{ 
+                      color: '#757575',
+                      fontSize: '0.7rem',
+                      mt: 0.5,
+                      display: 'block',
+                    }}>
+                      {processingPercentage.toFixed(1)}% Completat
+                    </Typography>
+                  </Box>
                 </Box>
-                <DocumentIcon sx={{ fontSize: 40, color: 'success.main' }} />
+                <Box sx={{
+                  backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                  borderRadius: '50%',
+                  p: 2,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                  <DocumentIcon sx={{ 
+                    fontSize: 40, 
+                    color: '#4caf50',
+                  }} />
+                </Box>
               </Box>
             </CardContent>
           </Card>
         </Grid>
 
         <Grid item xs={12} sm={6} md={3}>
-          <Card>
+          <Card sx={{
+            backgroundColor: 'white',
+            border: '1px solid #e0e0e0',
+            borderRadius: 2,
+            transition: 'all 0.2s ease',
+            '&:hover': {
+              boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+              transform: 'translateY(-2px)',
+            },
+          }}>
             <CardContent>
               <Box display="flex" alignItems="center" justifyContent="space-between">
                 <Box>
-                  <Typography color="textSecondary" gutterBottom>
+                  <Typography 
+                    variant="overline"
+                    sx={{ 
+                      color: '#757575',
+                      fontSize: '0.75rem',
+                      fontWeight: 600,
+                      mb: 1,
+                      display: 'block',
+                    }}
+                  >
                     Conversații Astăzi
                   </Typography>
-                  <Typography variant="h4">
+                  <Typography 
+                    variant="h3" 
+                    sx={{ 
+                      color: '#212121',
+                      fontWeight: 700,
+                      mb: 1,
+                    }}
+                  >
                     {stats?.conversations_today || 0}
                   </Typography>
-                  <Typography variant="body2" color="textSecondary">
+                  <Typography 
+                    variant="body2" 
+                    sx={{ 
+                      color: '#757575',
+                      fontSize: '0.875rem',
+                    }}
+                  >
                     {stats?.total_conversations || 0} total
                   </Typography>
                 </Box>
-                <ChatIcon sx={{ fontSize: 40, color: 'info.main' }} />
+                <Box sx={{
+                  backgroundColor: 'rgba(33, 150, 243, 0.1)',
+                  borderRadius: '50%',
+                  p: 2,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                  <ChatIcon sx={{ 
+                    fontSize: 40, 
+                    color: '#2196f3',
+                  }} />
+                </Box>
               </Box>
             </CardContent>
           </Card>
         </Grid>
 
         <Grid item xs={12} sm={6} md={3}>
-          <Card>
+          <Card sx={{
+            backgroundColor: 'white',
+            border: '1px solid #e0e0e0',
+            borderRadius: 2,
+            transition: 'all 0.2s ease',
+            '&:hover': {
+              boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+              transform: 'translateY(-2px)',
+            },
+          }}>
             <CardContent>
               <Box display="flex" alignItems="center" justifyContent="space-between">
-                <Box>
-                  <Typography color="textSecondary" gutterBottom>
+                <Box sx={{ width: '70%' }}>
+                  <Typography 
+                    variant="overline"
+                    sx={{ 
+                      color: '#757575',
+                      fontSize: '0.75rem',
+                      fontWeight: 600,
+                      mb: 1,
+                      display: 'block',
+                    }}
+                  >
                     Status Sistem
                   </Typography>
                   <Box display="flex" flexDirection="column" gap={1}>
                     <Chip
-                      label={chatHealth?.ollama_ready ? 'Ollama OK' : 'Ollama Offline'}
-                      color={chatHealth?.ollama_ready ? 'success' : 'error'}
+                      label={chatHealth?.ollama_ready ? 'Ollama Online' : 'Ollama Offline'}
+                      sx={{
+                        backgroundColor: chatHealth?.ollama_ready ? 'rgba(76, 175, 80, 0.1)' : 'rgba(244, 67, 54, 0.1)',
+                        color: chatHealth?.ollama_ready ? '#4caf50' : '#f44336',
+                        border: `1px solid ${chatHealth?.ollama_ready ? '#4caf50' : '#f44336'}30`,
+                        fontSize: '0.75rem',
+                        height: '28px',
+                        fontWeight: 500,
+                      }}
                       size="small"
                     />
                     <Chip
-                      label={chatHealth?.embedding_ready ? 'Embeddings OK' : 'Embeddings Offline'}
-                      color={chatHealth?.embedding_ready ? 'success' : 'error'}
+                      label={chatHealth?.embedding_ready ? 'Embeddings Ready' : 'Embeddings Down'}
+                      sx={{
+                        backgroundColor: chatHealth?.embedding_ready ? 'rgba(76, 175, 80, 0.1)' : 'rgba(244, 67, 54, 0.1)',
+                        color: chatHealth?.embedding_ready ? '#4caf50' : '#f44336',
+                        border: `1px solid ${chatHealth?.embedding_ready ? '#4caf50' : '#f44336'}30`,
+                        fontSize: '0.75rem',
+                        height: '28px',
+                        fontWeight: 500,
+                      }}
                       size="small"
                     />
                   </Box>
                 </Box>
-                <TrendingIcon sx={{ fontSize: 40, color: 'warning.main' }} />
+                <Box sx={{
+                  backgroundColor: 'rgba(255, 152, 0, 0.1)',
+                  borderRadius: '50%',
+                  p: 2,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                  <TrendingIcon sx={{ 
+                    fontSize: 40, 
+                    color: '#ff9800',
+                  }} />
+                </Box>
               </Box>
             </CardContent>
           </Card>
@@ -175,34 +436,105 @@ function Dashboard() {
       {/* Charts */}
       <Grid container spacing={3}>
         <Grid item xs={12} md={8}>
-          <Paper sx={{ p: 3 }}>
-            <Typography variant="h6" gutterBottom>
+          <Paper sx={{
+            backgroundColor: 'white',
+            border: '1px solid #e0e0e0',
+            borderRadius: 2,
+            p: 3,
+            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+          }}>
+            <Typography 
+              variant="h6" 
+              gutterBottom
+              sx={{
+                color: '#212121',
+                fontWeight: 600,
+                mb: 3,
+              }}
+            >
               Conversații pe Zile (Ultima Săptămână)
             </Typography>
             <ResponsiveContainer width="100%" height={300}>
               <LineChart data={conversationsData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Line type="monotone" dataKey="conversations" stroke="#1976d2" strokeWidth={2} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
+                <XAxis 
+                  dataKey="name" 
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: '#757575', fontSize: 12 }}
+                />
+                <YAxis 
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: '#757575', fontSize: 12 }}
+                />
+                <Tooltip 
+                  contentStyle={{
+                    backgroundColor: 'white',
+                    border: '1px solid #e0e0e0',
+                    borderRadius: '8px',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                  }}
+                />
+                <Line 
+                  type="monotone" 
+                  dataKey="conversations" 
+                  stroke="#1976d2"
+                  strokeWidth={3}
+                  dot={{ fill: '#1976d2', strokeWidth: 2, r: 4 }}
+                  activeDot={{ r: 6, fill: '#1976d2', stroke: 'white', strokeWidth: 2 }}
+                />
               </LineChart>
             </ResponsiveContainer>
           </Paper>
         </Grid>
 
         <Grid item xs={12} md={4}>
-          <Paper sx={{ p: 3 }}>
-            <Typography variant="h6" gutterBottom>
+          <Paper sx={{
+            backgroundColor: 'white',
+            border: '1px solid #e0e0e0',
+            borderRadius: 2,
+            p: 3,
+            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+          }}>
+            <Typography 
+              variant="h6" 
+              gutterBottom
+              sx={{
+                color: '#212121',
+                fontWeight: 600,
+                mb: 3,
+              }}
+            >
               Documente pe Categorii
             </Typography>
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={documentsData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="count" fill="#1976d2" />
+                <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
+                <XAxis 
+                  dataKey="name" 
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: '#757575', fontSize: 11 }}
+                />
+                <YAxis 
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: '#757575', fontSize: 12 }}
+                />
+                <Tooltip 
+                  contentStyle={{
+                    backgroundColor: 'white',
+                    border: '1px solid #e0e0e0',
+                    borderRadius: '8px',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                  }}
+                />
+                <Bar 
+                  dataKey="count" 
+                  fill="#1976d2"
+                  radius={[4, 4, 0, 0]}
+                />
               </BarChart>
             </ResponsiveContainer>
           </Paper>
@@ -212,39 +544,86 @@ function Dashboard() {
       {/* System Status */}
       <Grid container spacing={3} mt={2}>
         <Grid item xs={12}>
-          <Paper sx={{ p: 3 }}>
-            <Typography variant="h6" gutterBottom>
+          <Paper sx={{
+            backgroundColor: 'white',
+            border: '1px solid #e0e0e0',
+            borderRadius: 2,
+            p: 3,
+            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+          }}>
+            <Typography 
+              variant="h6" 
+              gutterBottom
+              sx={{
+                color: '#212121',
+                fontWeight: 600,
+                mb: 3,
+              }}
+            >
               Status Sistem Chat AI
             </Typography>
-            <Grid container spacing={2}>
+            <Grid container spacing={3}>
               <Grid item xs={12} sm={4}>
-                <Box display="flex" alignItems="center" justifyContent="space-between">
-                  <Typography>Model Ollama</Typography>
-                  <Chip
-                    label={chatHealth?.ollama_ready ? 'Online' : 'Offline'}
-                    color={chatHealth?.ollama_ready ? 'success' : 'error'}
-                  />
+                <Box sx={{
+                  backgroundColor: '#f5f5f5',
+                  borderRadius: '12px',
+                  p: 2,
+                  border: '1px solid #e0e0e0',
+                }}>
+                  <Box display="flex" alignItems="center" justifyContent="space-between">
+                    <Typography sx={{ color: '#212121', fontWeight: 500 }}>Model Ollama</Typography>
+                    <Chip
+                      label={chatHealth?.ollama_ready ? 'Online' : 'Offline'}
+                      sx={{
+                        backgroundColor: chatHealth?.ollama_ready ? 'rgba(76, 175, 80, 0.1)' : 'rgba(244, 67, 54, 0.1)',
+                        color: chatHealth?.ollama_ready ? '#4caf50' : '#f44336',
+                        border: `1px solid ${chatHealth?.ollama_ready ? '#4caf50' : '#f44336'}40`,
+                        fontWeight: 600,
+                      }}
+                    />
+                  </Box>
                 </Box>
               </Grid>
               <Grid item xs={12} sm={4}>
-                <Box display="flex" alignItems="center" justifyContent="space-between">
-                  <Typography>Serviciu Embeddings</Typography>
-                  <Chip
-                    label={chatHealth?.embedding_ready ? 'Ready' : 'Not Ready'}
-                    color={chatHealth?.embedding_ready ? 'success' : 'error'}
-                  />
+                <Box sx={{
+                  backgroundColor: '#f5f5f5',
+                  borderRadius: '12px',
+                  p: 2,
+                  border: '1px solid #e0e0e0',
+                }}>
+                  <Box display="flex" alignItems="center" justifyContent="space-between">
+                    <Typography sx={{ color: '#212121', fontWeight: 500 }}>Serviciu Embeddings</Typography>
+                    <Chip
+                      label={chatHealth?.embedding_ready ? 'Ready' : 'Not Ready'}
+                      sx={{
+                        backgroundColor: chatHealth?.embedding_ready ? 'rgba(76, 175, 80, 0.1)' : 'rgba(244, 67, 54, 0.1)',
+                        color: chatHealth?.embedding_ready ? '#4caf50' : '#f44336',
+                        border: `1px solid ${chatHealth?.embedding_ready ? '#4caf50' : '#f44336'}40`,
+                        fontWeight: 600,
+                      }}
+                    />
+                  </Box>
                 </Box>
               </Grid>
               <Grid item xs={12} sm={4}>
-                <Box display="flex" alignItems="center" justifyContent="space-between">
-                  <Typography>Status General</Typography>
-                  <Chip
-                    label={chatHealth?.status || 'Unknown'}
-                    color={
-                      chatHealth?.status === 'healthy' ? 'success' :
-                      chatHealth?.status === 'degraded' ? 'warning' : 'error'
-                    }
-                  />
+                <Box sx={{
+                  backgroundColor: '#f5f5f5',
+                  borderRadius: '12px',
+                  p: 2,
+                  border: '1px solid #e0e0e0',
+                }}>
+                  <Box display="flex" alignItems="center" justifyContent="space-between">
+                    <Typography sx={{ color: '#212121', fontWeight: 500 }}>Status General</Typography>
+                    <Chip
+                      label={chatHealth?.status || 'Unknown'}
+                      sx={{
+                        backgroundColor: chatHealth?.status === 'healthy' ? 'rgba(76, 175, 80, 0.1)' : chatHealth?.status === 'degraded' ? 'rgba(255, 152, 0, 0.1)' : 'rgba(244, 67, 54, 0.1)',
+                        color: chatHealth?.status === 'healthy' ? '#4caf50' : chatHealth?.status === 'degraded' ? '#ff9800' : '#f44336',
+                        border: `1px solid ${chatHealth?.status === 'healthy' ? '#4caf50' : chatHealth?.status === 'degraded' ? '#ff9800' : '#f44336'}40`,
+                        fontWeight: 600,
+                      }}
+                    />
+                  </Box>
                 </Box>
               </Grid>
             </Grid>

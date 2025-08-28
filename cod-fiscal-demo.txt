@@ -1,0 +1,60 @@
+CODUL FISCAL - LEGISLAȚIA TVA ROMÂNEASCĂ
+
+ARTICOLUL 291 - SCUTIRI DE TVA
+
+Sunt scutite de taxa pe valoarea adăugată următoarele operațiuni:
+a) prestațiile de servicii medicale și stomatologice de interes uman;
+b) transportul de persoane și bagajele însoțitoare; 
+c) prestațiile de servicii conexe transportului international de bunuri;
+d) livrările de bunuri și prestațiile de servicii efectuate în cadrul activităților de utilitate publică;
+e) prestațiile de servicii în domeniul învățământului;
+f) prestațiile de servicii și livrările de bunuri care au legătură directă cu activitatea de protecție socială și de asigurare socială;
+g) prestațiile de servicii culturale și sportive;
+h) livrările de bunuri care au fost folosite pentru prestarea de servicii scutite;
+i) operațiunile de asigurare și reasigurare;
+j) operațiunile privind creditele și depozitele bancare;
+k) livrările de timbre poștale cu valoarea nominală în vigoare;
+l) livrările de bunuri efectuate de către orce persoană în cadrul unei activități economice ocazionale.
+
+ARTICOLUL 292 - COTA REDUSĂ DE 5%
+
+Se aplică cota redusă de 5% pentru:
+- produse alimentare de primă necesitate (pâine, lapte, ouă, carne, pește, fructe, legume);
+- medicamente pentru uz uman și veterinar;
+- cărți, ziare și reviste;
+- echipamente și dispozitive medicale pentru persoane cu handicap.
+
+ARTICOLUL 293 - COTA REDUSĂ DE 9%
+
+Se aplică cota redusă de 9% pentru:
+- servicii de cazare în hoteluri și alte facilități similare;
+- servicii de alimentație publică (restaurante, cantine);
+- accesul la evenimente sportive și culturale;
+- servicii de reparații pentru bunurile de consum curent.
+
+ARTICOLUL 294 - COTA STANDARD DE 19%
+
+Cota standard de TVA este de 19% și se aplică pentru toate operațiunile care nu sunt scutite sau supuse unei cote reduse.
+
+EXEMPLE PRACTICE:
+
+1. SCUTIT DE TVA (0%):
+   - Consultație medicală: 200 lei (fără TVA)
+   - Bilet autobuz: 2 lei (fără TVA)
+   - Poliță de asigurare: 500 lei (fără TVA)
+
+2. COTĂ REDUSĂ 5%:
+   - Pâine: 2 lei + 0,10 lei TVA = 2,10 lei
+   - Medicament: 50 lei + 2,50 lei TVA = 52,50 lei
+   - Carte: 30 lei + 1,50 lei TVA = 31,50 lei
+
+3. COTĂ REDUSĂ 9%:
+   - Masă restaurant: 100 lei + 9 lei TVA = 109 lei
+   - Cazare hotel: 200 lei + 18 lei TVA = 218 lei
+
+4. COTĂ STANDARD 19%:
+   - Televizor: 1000 lei + 190 lei TVA = 1190 lei
+   - Serviciu reparație auto: 300 lei + 57 lei TVA = 357 lei
+
+Sursa: Codul Fiscal al României - Articolele 291-294
+Ultima actualizare: 2024

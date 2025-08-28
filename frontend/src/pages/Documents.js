@@ -40,6 +40,7 @@ import { documentsAPI, municipalitiesAPI } from '../services/api';
 function Documents() {
   const queryClient = useQueryClient();
   const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
+  const [urlDialogOpen, setUrlDialogOpen] = useState(false);
   const [bulkAssignDialogOpen, setBulkAssignDialogOpen] = useState(false);
   const [selectedDocuments, setSelectedDocuments] = useState([]);
   const [selectedMunicipalities, setSelectedMunicipalities] = useState([]);
@@ -69,6 +70,14 @@ function Documents() {
   const deleteMutation = useMutation(documentsAPI.delete, {
     onSuccess: () => {
       queryClient.invalidateQueries('documents');
+    },
+  });
+
+  // URL document mutation
+  const addUrlMutation = useMutation(documentsAPI.addUrl, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('documents');
+      setUrlDialogOpen(false);
     },
   });
 
@@ -123,6 +132,36 @@ function Documents() {
       field: 'original_filename',
       headerName: 'Nume Fișier',
       flex: 1,
+    },
+    {
+      field: 'source_type',
+      headerName: 'Sursă',
+      width: 80,
+      renderCell: (params) => (
+        <Chip 
+          label={params.value === 'url' ? 'URL' : 'Fișier'} 
+          size="small" 
+          color={params.value === 'url' ? 'primary' : 'default'}
+        />
+      ),
+    },
+    {
+      field: 'version_year',
+      headerName: 'An',
+      width: 70,
+      renderCell: (params) => params.value || '-',
+    },
+    {
+      field: 'priority',
+      headerName: 'Prioritate',
+      width: 90,
+      renderCell: (params) => (
+        <Chip 
+          label={params.value} 
+          size="small" 
+          color={params.value > 10 ? 'success' : params.value > 5 ? 'warning' : 'default'}
+        />
+      ),
     },
     {
       field: 'category',
@@ -201,6 +240,13 @@ function Documents() {
             sx={{ mr: 2 }}
           >
             Asociere în masă
+          </Button>
+          <Button
+            variant="outlined"
+            onClick={() => setUrlDialogOpen(true)}
+            sx={{ mr: 2 }}
+          >
+            Adaugă URL
           </Button>
           <Fab
             color="primary"
@@ -286,6 +332,16 @@ function Documents() {
         onUpload={uploadMutation.mutate}
         loading={uploadMutation.isLoading}
         error={uploadMutation.error}
+      />
+
+      {/* URL Dialog */}
+      <URLDialog
+        open={urlDialogOpen}
+        onClose={() => setUrlDialogOpen(false)}
+        municipalities={municipalities}
+        onAddUrl={addUrlMutation.mutate}
+        loading={addUrlMutation.isLoading}
+        error={addUrlMutation.error}
       />
 
       {/* Bulk Assign Dialog */}
@@ -498,6 +554,155 @@ function UploadDialog({ open, onClose, municipalities, onUpload, loading, error 
           disabled={!formData.municipality_id || files.length === 0 || loading}
         >
           {loading ? 'Se încarcă...' : 'Upload'}
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+}
+
+// URL Dialog Component
+function URLDialog({ open, onClose, municipalities, onAddUrl, loading, error }) {
+  const [formData, setFormData] = useState({
+    url: '',
+    municipality_id: '',
+    category: 'fiscal',
+    title: '',
+    description: '',
+    version_year: '',
+  });
+
+  const handleSubmit = async () => {
+    if (!formData.url || !formData.municipality_id) return;
+
+    const requestData = {
+      url: formData.url,
+      municipality_id: formData.municipality_id,
+      category: formData.category,
+      title: formData.title || undefined,
+      description: formData.description || undefined,
+      version_year: formData.version_year ? parseInt(formData.version_year) : undefined,
+    };
+
+    try {
+      await onAddUrl(requestData);
+      // Reset form
+      setFormData({
+        url: '',
+        municipality_id: '',
+        category: 'fiscal',
+        title: '',
+        description: '',
+        version_year: '',
+      });
+    } catch (err) {
+      console.error('URL add failed:', err);
+    }
+  };
+
+  return (
+    <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
+      <DialogTitle>Adaugă Document din URL</DialogTitle>
+      <DialogContent>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              margin="normal"
+              label="URL"
+              placeholder="https://example.com/document"
+              value={formData.url}
+              onChange={(e) => setFormData({ ...formData, url: e.target.value })}
+              required
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <FormControl fullWidth margin="normal" required>
+              <InputLabel>Primăria</InputLabel>
+              <Select
+                value={formData.municipality_id}
+                label="Primăria"
+                onChange={(e) => setFormData({ ...formData, municipality_id: e.target.value })}
+              >
+                {municipalities.map((municipality) => (
+                  <MenuItem key={municipality.id} value={municipality.id}>
+                    {municipality.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <FormControl fullWidth margin="normal">
+              <InputLabel>Categorie</InputLabel>
+              <Select
+                value={formData.category}
+                label="Categorie"
+                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+              >
+                <MenuItem value="fiscal">Fiscal</MenuItem>
+                <MenuItem value="urbanism">Urbanism</MenuItem>
+                <MenuItem value="social">Asistență Socială</MenuItem>
+                <MenuItem value="utilities">Utilități</MenuItem>
+                <MenuItem value="other">Altele</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              margin="normal"
+              label="An versiune (opțional)"
+              type="number"
+              placeholder="2024"
+              value={formData.version_year}
+              onChange={(e) => setFormData({ ...formData, version_year: e.target.value })}
+              inputProps={{ min: 2010, max: new Date().getFullYear() + 1 }}
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              margin="normal"
+              label="Titlu (opțional)"
+              placeholder="Se va extrage automat din pagină dacă nu se completează"
+              value={formData.title}
+              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              margin="normal"
+              label="Descriere (opțional)"
+              multiline
+              rows={3}
+              value={formData.description}
+              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+            />
+          </Grid>
+        </Grid>
+
+        {error && (
+          <Alert severity="error" sx={{ mt: 2 }}>
+            {error.response?.data?.detail || 'Eroare la adăugarea URL-ului'}
+          </Alert>
+        )}
+
+        {loading && <LinearProgress sx={{ mt: 2 }} />}
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose}>Anulare</Button>
+        <Button
+          onClick={handleSubmit}
+          variant="contained"
+          disabled={!formData.url || !formData.municipality_id || loading}
+        >
+          {loading ? 'Se adaugă...' : 'Adaugă URL'}
         </Button>
       </DialogActions>
     </Dialog>

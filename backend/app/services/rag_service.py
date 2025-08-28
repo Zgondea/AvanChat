@@ -40,11 +40,13 @@ class RAGService:
             # Search for similar chunks in the database
             limit = limit or self.max_results
             
-            # Using pgvector cosine similarity
+            # Using pgvector cosine similarity with priority weighting
             similarity_query = select(
                 DocumentChunk,
-                DocumentChunk.embedding.cosine_distance(query_embedding).label("distance")
-            ).where(
+                DocumentChunk.embedding.cosine_distance(query_embedding).label("distance"),
+                Document.priority,
+                Document.version_year
+            ).join(Document).where(
                 and_(
                     DocumentChunk.municipality_id == municipality_id,
                     DocumentChunk.embedding.cosine_distance(query_embedding) < (1 - self.similarity_threshold)
@@ -52,16 +54,39 @@ class RAGService:
             ).options(
                 selectinload(DocumentChunk.document)
             ).order_by(
+                # Priority-weighted ordering: higher priority documents first, then by similarity
+                Document.priority.desc(),
                 DocumentChunk.embedding.cosine_distance(query_embedding)
-            ).limit(limit)
+            ).limit(limit * 2)  # Get more results to filter by priority later
             
             result = await db.execute(similarity_query)
-            chunks_with_distance = result.all()
+            chunks_with_metadata = result.all()
             
-            # Convert distance to similarity score (cosine distance = 1 - cosine similarity)
-            chunks_with_similarity = [
-                (chunk, 1 - distance) for chunk, distance in chunks_with_distance
-            ]
+            # Convert distance to similarity score and apply priority weighting
+            chunks_with_similarity = []
+            for chunk, distance, priority, version_year in chunks_with_metadata:
+                base_similarity = 1 - distance  # cosine distance = 1 - cosine similarity
+                
+                # Apply priority boost (priority ranges from 1-20, boost ranges from 0.0-0.2)
+                priority_boost = (priority - 1) / 100.0  # Convert to 0.0-0.19 range
+                
+                # Apply year boost for recent documents
+                year_boost = 0.0
+                if version_year:
+                    current_year = 2024  # You might want to use datetime.now().year
+                    if version_year >= current_year:
+                        year_boost = 0.1  # Current year documents get extra boost
+                    elif version_year >= current_year - 1:
+                        year_boost = 0.05  # Previous year documents get small boost
+                
+                # Combine all factors (but cap at 1.0)
+                final_similarity = min(base_similarity + priority_boost + year_boost, 1.0)
+                
+                chunks_with_similarity.append((chunk, final_similarity))
+            
+            # Re-sort by final similarity score and limit to original limit
+            chunks_with_similarity.sort(key=lambda x: x[1], reverse=True)
+            chunks_with_similarity = chunks_with_similarity[:limit]
             
             logger.info(f"Found {len(chunks_with_similarity)} relevant chunks for query in municipality {municipality_id}")
             return chunks_with_similarity
@@ -109,6 +134,10 @@ class RAGService:
                 source_info = {
                     "document_id": str(chunk.document_id),
                     "document_name": chunk.document.original_filename,
+                    "source_type": chunk.document.source_type,
+                    "source_url": chunk.document.source_url,
+                    "priority": chunk.document.priority,
+                    "version_year": chunk.document.version_year,
                     "page_number": chunk.page_number,
                     "chunk_index": chunk.chunk_index,
                     "similarity": similarity,

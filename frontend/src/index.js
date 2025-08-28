@@ -6,6 +6,12 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import App from './App';
 
+console.log('🚀 React App Starting...', {
+  NODE_ENV: process.env.NODE_ENV,
+  REACT_APP_API_URL: process.env.REACT_APP_API_URL,
+  timestamp: new Date().toISOString()
+});
+
 // Create React Query client
 const queryClient = new QueryClient({
   defaultOptions: {

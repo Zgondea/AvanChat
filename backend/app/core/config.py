@@ -37,9 +37,9 @@ class Settings(BaseSettings):
     EMBEDDING_MODEL: str = "sentence-transformers/all-MiniLM-L6-v2"
     CHUNK_SIZE: int = 300
     CHUNK_OVERLAP: int = 30
-    MAX_TOKENS: int = 512
-    SIMILARITY_THRESHOLD: float = 0.0
-    MAX_RESULTS: int = 3
+    MAX_TOKENS: int = 128  # Even smaller for fastest responses
+    SIMILARITY_THRESHOLD: float = 0.4  # Higher threshold to get better matches
+    MAX_RESULTS: int = 1  # Single best result for fastest processing
     
     # Romanian language specific
     ROMANIAN_STOPWORDS: List[str] = [

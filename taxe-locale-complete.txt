@@ -1,0 +1,121 @@
+GHID COMPLET TAXE LOCALE ȘI IMPOZITE ROMÂNIA
+
+1. COTA STANDARD DE TVA ÎN ROMÂNIA
+
+Cota standard de TVA în România este de 21%.
+
+Cote TVA aplicabile:
+- Cota standard: 19% (pentru majoritatea bunurilor și serviciilor)
+- Cota redusă 1: 9% (pentru medicamente, cărți, cazare turistică, servicii de alimentație publică)
+- Cota redusă 2: 5% (pentru locuințe în cadrul programelor sociale, livrări de căldură)
+- Cota zero: 0% (pentru exporturi și alte operațiuni specifice)
+
+TVA se plătește lunar până în data de 25 a lunii următoare.
+
+2. CALCULUL TAXEI PE CLĂDIRI
+
+Taxa pe clădiri se calculează după următoarea formulă:
+Taxa = Valoarea impozabilă × Cota de impozitare
+
+Valoarea impozabilă se stabilește prin:
+a) Valoarea din declarația de impozit depusă de proprietar
+b) Valoarea determinată prin evaluare de către autorități
+c) Valoarea rezultată din expertize tehnice
+
+Cotele de impozitare pentru clădiri:
+- Clădiri rezidențiale: între 0,08% și 0,2% anual
+- Clădiri comerciale/industriale: între 0,2% și 1,3% anual
+- Clădiri în zone centrale: cotă majorată cu până la 0,1%
+
+Scutiri și reduceri:
+- Veterani de război: scutire totală
+- Persoane cu dizabilități: reducere 50%
+- Pensionari cu venituri mici: reducere 50%
+
+3. TAXE LOCALE CE SE PLĂTESC LA PRIMĂRIE
+
+TAXE OBLIGATORII:
+a) Taxa pe clădiri
+- Pentru toate tipurile de construcții
+- Se plătește anual în două rate
+
+b) Taxa pe teren  
+- Pentru terenuri aflate în proprietate
+- Calculată pe metru pătrat
+
+c) Taxa pentru mijloace de transport
+- Pentru autovehicule, motociclete, remorcile
+- Funcție de capacitatea cilindrică/puterea motorului
+
+d) Taxa pentru spectacole
+- Pentru organizarea de spectacole, concerte
+- Variază între 2-10% din încasări
+
+e) Taxa pentru reclamă și publicitate
+- Pentru panourile publicitare, firmele comerciale
+- Calculată pe metru pătrat expus
+
+f) Taxa pentru ocuparea domeniului public
+- Pentru terasele restaurantelor, chioșcurilor
+- Se plătește lunar sau anual
+
+g) Taxa de salubritate
+- Pentru serviciile de colectare deșeuri
+- Calculată per persoană sau per metru pătrat
+
+AUTORIZAȚII ȘI AVIZE (cu taxă):
+- Autorizații de construire
+- Autorizații de demolare  
+- Autorizații funcționare unități publice
+- Certificate de urbanism
+- Avize pentru branșamente utilități
+
+4. TERMENE DE PLATĂ TAXE LOCALE
+
+PLĂȚI ANUALE (în 2 rate):
+- Taxa pe clădiri: 
+  * Rata I: până la 31 martie
+  * Rata II: până la 30 septembrie
+
+- Taxa pe teren:
+  * Rata I: până la 31 martie  
+  * Rata II: până la 30 septembrie
+
+- Taxa pentru mijloace de transport:
+  * Rata I: până la 31 martie
+  * Rata II: până la 30 septembrie
+
+PLĂȚI LUNARE:
+- Taxa de salubritate: până în 15 a lunii
+- Taxa pentru ocuparea domeniului public: lunar anticipat
+
+PLĂȚI TRIMESTRIALE:
+- Taxa pentru publicitate: trimestrial, până la 15 a primei luni din trimestru
+
+DECLARAȚII:
+- Declarații pentru taxe locale: până la 31 ianuarie pentru anul curent
+- Declarații modificări: în termen de 30 zile de la modificare
+
+PLATA ANTICIPATĂ:
+Persoanele care plătesc integral taxa până la 31 martie beneficiază de:
+- Reducere 10% pentru taxa pe clădiri
+- Reducere 10% pentru taxa pe teren
+- Reducere 10% pentru taxa auto
+
+PENALITĂȚI:
+- Pentru întârziere: 0,01% pe zi din suma datorată
+- Pentru nedeclarare: amendă între 500-2000 lei
+- Pentru declarații false: amendă între 1000-5000 lei
+
+MODALITĂȚI DE PLATĂ:
+- Direct la casieria primăriei
+- Prin virament bancar
+- Online pe platforma primăriei
+- Prin mandate poștale
+- Prin aplicații mobile ale băncilor
+
+INFORMAȚII SUPLIMENTARE:
+- Taxele locale se stabilesc prin hotărâri ale consiliului local
+- Valorile pot varia între localități în limitele legale
+- Contribuabilii pot solicita eșalonări la plată în condiții speciale
+- Contestațiile se depun în termen de 30 zile de la comunicare
