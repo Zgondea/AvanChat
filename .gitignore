@@ -195,4 +195,5 @@ dmypy.json
 
 # Keep widget and demo files
 !widget/
-!municipality-demo/
+!municipality-demo/__pycache__/
+*.pyc
