@@ -1,8 +1,9 @@
+# backend/app/models/admin_user.py
 from sqlalchemy import Column, String, DateTime, Boolean
 from sqlalchemy.dialects.postgresql import UUID
 from datetime import datetime
 import uuid
-from .database import Base
+from app.core.database import Base  # <- asigură-te că importul e corect
 
 class AdminUser(Base):
     __tablename__ = "admin_users"

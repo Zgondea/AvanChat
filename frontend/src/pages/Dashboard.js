@@ -10,6 +10,7 @@ import {
   LinearProgress,
   Chip,
   Fab,
+  Button,
 } from '@mui/material';
 import {
   Business as BusinessIcon,
@@ -17,13 +18,18 @@ import {
   Chat as ChatIcon,
   TrendingUp as TrendingIcon,
   Refresh as RefreshIcon,
+  Gavel as LawIcon,
+  Compare as CompareIcon,
+  CloudUpload as CloudUploadIcon,
 } from '@mui/icons-material';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from 'recharts';
 
-import { adminAPI, chatAPI } from '../services/api';
+import { adminAPI, chatAPI, lawsAPI } from '../services/api';
+import { useNavigate } from 'react-router-dom';
 
 function Dashboard() {
   const [refreshAnimation, setRefreshAnimation] = useState(false);
+  const navigate = useNavigate();
 
   // Fetch dashboard statistics
   const { data: stats, isLoading: statsLoading } = useQuery(
@@ -37,6 +43,13 @@ function Dashboard() {
     'chat-health',
     () => chatAPI.health().then(res => res.data),
     { refetchInterval: 10000 } // Refresh every 10 seconds
+  );
+
+  // Fetch laws data
+  const { data: lawsData } = useQuery(
+    'laws-list',
+    () => lawsAPI.list().then(res => res.data),
+    { refetchInterval: 60000 } // Refresh every minute
   );
 
   // Mock data for charts (in a real app, this would come from API)
@@ -537,6 +550,170 @@ function Dashboard() {
                 />
               </BarChart>
             </ResponsiveContainer>
+          </Paper>
+        </Grid>
+      </Grid>
+
+      {/* Laws Management Section */}
+      <Grid container spacing={3} sx={{ mt: 2 }}>
+        <Grid item xs={12}>
+          <Paper sx={{
+            backgroundColor: 'white',
+            border: '1px solid #e0e0e0',
+            borderRadius: 2,
+            p: 3,
+            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+          }}>
+            <Typography 
+              variant="h6" 
+              gutterBottom
+              sx={{
+                color: '#212121',
+                fontWeight: 600,
+                mb: 3,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1,
+              }}
+            >
+              <LawIcon sx={{ color: '#9c27b0' }} />
+              Management Legi & Versiuni
+            </Typography>
+            
+            <Grid container spacing={3}>
+              <Grid item xs={12} sm={6} md={3}>
+                <Box sx={{
+                  backgroundColor: '#f5f5f5',
+                  borderRadius: '12px',
+                  p: 2,
+                  border: '1px solid #e0e0e0',
+                  textAlign: 'center',
+                }}>
+                  <LawIcon sx={{ 
+                    fontSize: 40, 
+                    color: '#9c27b0', 
+                    mb: 1 
+                  }} />
+                  <Typography variant="h4" sx={{ 
+                    color: '#212121', 
+                    fontWeight: 700,
+                    mb: 0.5,
+                  }}>
+                    {lawsData?.length || 0}
+                  </Typography>
+                  <Typography sx={{ 
+                    color: '#757575', 
+                    fontSize: '0.875rem',
+                    fontWeight: 500,
+                  }}>
+                    Legi Gestionate
+                  </Typography>
+                </Box>
+              </Grid>
+              
+              <Grid item xs={12} sm={6} md={9}>
+                <Box sx={{
+                  backgroundColor: '#f8f9fa',
+                  borderRadius: '12px',
+                  p: 2,
+                  border: '1px solid #e0e0e0',
+                  minHeight: 120,
+                }}>
+                  <Typography variant="subtitle2" sx={{ 
+                    color: '#212121', 
+                    fontWeight: 600,
+                    mb: 2,
+                  }}>
+                    Legi Recente
+                  </Typography>
+                  
+                  {lawsData && lawsData.length > 0 ? (
+                    <>
+                    <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        onClick={() => navigate('/laws-upload')}
+                        startIcon={<CloudUploadIcon />}
+                        sx={{ 
+                          borderColor: '#2196f3',
+                          color: '#2196f3',
+                          '&:hover': {
+                            borderColor: '#1976d2',
+                            backgroundColor: 'rgba(33, 150, 243, 0.04)'
+                          }
+                        }}
+                      >
+                        Upload Legi
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        onClick={() => navigate('/laws-comparison')}
+                        startIcon={<CompareIcon />}
+                        sx={{ 
+                          borderColor: '#9c27b0',
+                          color: '#9c27b0',
+                          '&:hover': {
+                            borderColor: '#7b1fa2',
+                            backgroundColor: 'rgba(156, 39, 176, 0.04)'
+                          }
+                        }}
+                      >
+                        Compară Versiuni
+                      </Button>
+                    </Box>
+                    <Grid container spacing={2}>
+                      {lawsData.slice(0, 3).map((law) => (
+                        <Grid item xs={12} sm={4} key={law.id}>
+                          <Box sx={{
+                            backgroundColor: 'white',
+                            borderRadius: '8px',
+                            p: 1.5,
+                            border: '1px solid #e0e0e0',
+                            transition: 'all 0.2s ease',
+                            '&:hover': {
+                              borderColor: '#9c27b0',
+                              boxShadow: '0 2px 8px rgba(156, 39, 176, 0.1)',
+                            },
+                          }}>
+                            <Typography sx={{ 
+                              color: '#212121', 
+                              fontWeight: 600,
+                              fontSize: '0.85rem',
+                              mb: 0.5,
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              whiteSpace: 'nowrap',
+                            }}>
+                              {law.title}
+                            </Typography>
+                            <Typography sx={{ 
+                              color: '#757575', 
+                              fontSize: '0.7rem',
+                            }}>
+                              {new Date(law.created_at).toLocaleDateString('ro-RO')}
+                            </Typography>
+                          </Box>
+                        </Grid>
+                      ))}
+                    </Grid>
+                    </>
+                  ) : (
+                    <Box sx={{ 
+                      textAlign: 'center', 
+                      py: 2,
+                      color: '#757575',
+                    }}>
+                      <CompareIcon sx={{ fontSize: 32, mb: 1, opacity: 0.3 }} />
+                      <Typography fontSize="0.875rem">
+                        Nu sunt legi gestionate încă
+                      </Typography>
+                    </Box>
+                  )}
+                </Box>
+              </Grid>
+            </Grid>
           </Paper>
         </Grid>
       </Grid>

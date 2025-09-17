@@ -7,9 +7,9 @@ const api = axios.create({
 });
 
 // Auth token management
-const getAuthToken = () => localStorage.getItem('token');
-const setAuthToken = (token) => localStorage.setItem('token', token);
-const removeAuthToken = () => localStorage.removeItem('token');
+const getAuthToken = () => localStorage.getItem('auth_token');
+const setAuthToken = (token) => localStorage.setItem('auth_token', token);
+const removeAuthToken = () => localStorage.removeItem('auth_token');
 
 // Request interceptor to add auth token
 api.interceptors.request.use(
@@ -91,7 +91,66 @@ export const chatAPI = {
   listMunicipalities: () => api.get('/chat/municipalities'),
 };
 
+// Laws API
+export const lawsAPI = {
+  list: () => api.get('/laws'),
+  get: (id) => api.get(`/laws/${id}`),
+  create: (data) => api.post('/laws', data),
+  listVersions: (lawId) => api.get(`/laws/${lawId}/versions`),
+  createVersion: (lawId, data) => api.post(`/laws/${lawId}/versions`, data),
+  listSections: (lawId, versionId) => api.get(`/laws/${lawId}/versions/${versionId}/sections`),
+  compareVersions: (lawId, from, to) => api.get(`/laws/${lawId}/compare`, { 
+    params: { from, to } 
+  }),
+  getSectionDiff: (lawId, sectionKey, from, to, mode = 'inline') => api.get(
+    `/laws/${lawId}/sections/${sectionKey}/diff`, 
+    { params: { from, to, mode } }
+  ),
+  searchDifferences: (lawId, from, to, filters) => api.post(
+    `/laws/${lawId}/search`,
+    filters,
+    { params: { from, to } }
+  ),
+  uploadNewLaw: (data) => api.post('/laws/upload-new', data, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  }),
+  uploadLawVersion: (lawId, versionNo, data) => api.post(
+    `/laws/${lawId}/versions/${versionNo}/upload`, 
+    data, 
+    { headers: { 'Content-Type': 'multipart/form-data' } }
+  ),
+};
+
 // Export auth token utilities
+// Favorites API
+export const favoritesAPI = {
+  add: (lawId, userId) => api.post('/favorites', { law_id: lawId, user_id: userId }),
+  list: (userId) => api.get('/favorites', { params: { user_id: userId } }),
+  remove: (lawId, userId) => api.delete(`/favorites/${lawId}`, { params: { user_id: userId } }),
+  check: (lawId, userId) => api.get(`/favorites/check/${lawId}`, { params: { user_id: userId } }),
+  getStats: (userId) => api.get('/favorites/stats', { params: { user_id: userId } }),
+};
+
+// Notifications API
+export const notificationsAPI = {
+  list: (userId, unreadOnly = false, limit = 20, offset = 0) => api.get('/notifications', { 
+    params: { user_id: userId, unread_only: unreadOnly, limit, offset } 
+  }),
+  markRead: (notificationId, userId) => api.post(`/notifications/${notificationId}/read`, {}, { 
+    params: { user_id: userId } 
+  }),
+  markAllRead: (userId) => api.post('/notifications/mark-all-read', {}, { 
+    params: { user_id: userId } 
+  }),
+  delete: (notificationId, userId) => api.delete(`/notifications/${notificationId}`, { 
+    params: { user_id: userId } 
+  }),
+  getCount: (userId, unreadOnly = true) => api.get('/notifications/count', { 
+    params: { user_id: userId, unread_only: unreadOnly } 
+  }),
+  create: (data) => api.post('/notifications', data),
+};
+
 export { getAuthToken, setAuthToken, removeAuthToken };
 
 export default api;

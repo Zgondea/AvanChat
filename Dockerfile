@@ -11,6 +11,7 @@ RUN pip install fastapi uvicorn python-multipart
 
 # Copy application
 COPY backend/app/main_simple.py ./app/main.py
+COPY scripts /app/scripts
 
 # Expose port
 EXPOSE 8000

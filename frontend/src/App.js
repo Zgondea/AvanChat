@@ -9,27 +9,53 @@ import Dashboard from './pages/Dashboard';
 import Municipalities from './pages/Municipalities';
 import Documents from './pages/Documents';
 import Conversations from './pages/Conversations';
+import LawsComparison from './pages/LawsComparison';
+import LawsUpload from './pages/LawsUpload';
 
 // Protected Route Component
 function ProtectedRoute({ children }) {
   const { isAuthenticated, loading } = useAuth();
   
   if (loading) {
-    return <Box>Loading...</Box>;
+    return (
+      <Box 
+        sx={{ 
+          display: 'flex', 
+          justifyContent: 'center', 
+          alignItems: 'center', 
+          height: '100vh',
+          fontSize: '18px'
+        }}
+      >
+        Loading...
+      </Box>
+    );
   }
   
-  return isAuthenticated ? children : <Navigate to="/login" />;
+  return isAuthenticated ? children : <Navigate to="/login" replace />;
 }
 
-// Public Route Component (redirect if authenticated)
+// Public Route Component
 function PublicRoute({ children }) {
   const { isAuthenticated, loading } = useAuth();
   
   if (loading) {
-    return <Box>Loading...</Box>;
+    return (
+      <Box 
+        sx={{ 
+          display: 'flex', 
+          justifyContent: 'center', 
+          alignItems: 'center', 
+          height: '100vh',
+          fontSize: '18px'
+        }}
+      >
+        Loading...
+      </Box>
+    );
   }
   
-  return !isAuthenticated ? children : <Navigate to="/dashboard" />;
+  return !isAuthenticated ? children : <Navigate to="/dashboard" replace />;
 }
 
 function App() {
@@ -52,11 +78,13 @@ function App() {
             </ProtectedRoute>
           }
         >
-          <Route index element={<Navigate to="/dashboard" />} />
+          <Route index element={<Navigate to="/dashboard" replace />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="municipalities" element={<Municipalities />} />
           <Route path="documents" element={<Documents />} />
           <Route path="conversations" element={<Conversations />} />
+          <Route path="laws-comparison" element={<LawsComparison />} />
+          <Route path="laws-upload" element={<LawsUpload />} />
         </Route>
       </Routes>
     </AuthProvider>

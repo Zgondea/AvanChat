@@ -1,7 +1,6 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import JSONResponse
+from pydantic import BaseModel
 import os
 
 # Create FastAPI app
@@ -28,19 +27,19 @@ async def root():
 async def health_check():
     return {"status": "healthy", "environment": os.getenv("ENVIRONMENT", "development")}
 
-# Chat endpoint simplificat pentru demo
+# -------------------------------
+#  DEMO CHAT ENDPOINTS
+# -------------------------------
 @app.post("/api/v1/chat/")
 async def chat_demo(request: dict):
     message = request.get("message", "")
     
-    # Răspunsuri demo pentru testare
     demo_responses = {
         "care este cota standard de tva": "Cota standard de TVA în România este de 19% începând cu 1 ianuarie 2024.",
         "cum calculez taxa pe cladiri": "Taxa pe clădiri se calculează în funcție de valoarea impozabilă și cota stabilită de consiliul local.",
         "ce documente trebuie pentru autorizatie": "Pentru autorizația de construire aveți nevoie de: planul de amplasament, proiectul tehnic, și avizele necesare."
     }
     
-    # Caută răspuns demo
     message_lower = message.lower()
     response = "Îmi pare rău, momentan sunt în modul demo. Pentru răspunsuri complete, contactați primăria direct."
     
@@ -62,13 +61,30 @@ async def get_municipalities():
     return [
         {
             "id": "demo",
-            "name": "Primăria Demo", 
+            "name": "Primăria Demo",
             "domain": "demo.ro",
             "description": "Primărie demo pentru testare"
         }
     ]
 
+# -------------------------------
+#  AUTH / LOGIN ENDPOINT
+# -------------------------------
+class LoginIn(BaseModel):
+    email: str
+    password: str
+
+@app.post("/api/v1/dashboard/login")
+async def login(payload: LoginIn):
+    # TODO: aici verifici cu baza de date
+    if payload.email != "admin@example.com" or payload.password != "parola":
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+    return {"access_token": "demo.jwt.token", "token_type": "bearer", "user": payload.email}
+
+# -------------------------------
+#  ENTRY POINT
+# -------------------------------
 if __name__ == "__main__":
     import uvicorn
     port = int(os.getenv("PORT", "8000"))
-    uvicorn.run("app.main_simple:app", host="0.0.0.0", port=port)
+    uvicorn.run("backend.app.main_simple:app", host="0.0.0.0", port=port, reload=True)

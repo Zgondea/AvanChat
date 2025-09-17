@@ -28,27 +28,29 @@ async def lifespan(app: FastAPI):
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
     
+    # Skip Ollama initialization for now - can be enabled later
+    logger.warning("Skipping Ollama and embedding service initialization for testing")
     # Initialize services in background to avoid blocking startup
-    try:
-        ollama_service = OllamaService()
-        embedding_service = EmbeddingService()
-        
-        # Wait for Ollama to be ready and pull model if needed (with timeout)
-        import asyncio
-        try:
-            await asyncio.wait_for(ollama_service.ensure_model_ready(), timeout=60.0)
-        except asyncio.TimeoutError:
-            logger.warning("Ollama initialization timed out, will continue in background")
-        
-        # Initialize embedding model (with timeout)
-        try:
-            await asyncio.wait_for(embedding_service.initialize(), timeout=120.0)
-        except asyncio.TimeoutError:
-            logger.warning("Embedding service initialization timed out, will continue in background")
-            
-    except Exception as e:
-        logger.error(f"Error during service initialization: {e}")
-        # Don't block startup if services fail to initialize
+    # try:
+    #     ollama_service = OllamaService()
+    #     embedding_service = EmbeddingService()
+    #     
+    #     # Wait for Ollama to be ready and pull model if needed (with timeout)
+    #     import asyncio
+    #     try:
+    #         await asyncio.wait_for(ollama_service.ensure_model_ready(), timeout=60.0)
+    #     except asyncio.TimeoutError:
+    #         logger.warning("Ollama initialization timed out, will continue in background")
+    #     
+    #     # Initialize embedding model (with timeout)
+    #     try:
+    #         await asyncio.wait_for(embedding_service.initialize(), timeout=120.0)
+    #     except asyncio.TimeoutError:
+    #         logger.warning("Embedding service initialization timed out, will continue in background")
+    #         
+    # except Exception as e:
+    #     logger.error(f"Error during service initialization: {e}")
+    #     # Don't block startup if services fail to initialize
     
     logger.info("Application startup complete")
     
@@ -56,8 +58,8 @@ async def lifespan(app: FastAPI):
     
     # Shutdown
     logger.info("Shutting down application...")
-    await ollama_service.close()
-    await embedding_service.close()
+    # await ollama_service.close()
+    # await embedding_service.close()
     logger.info("Application shutdown complete")
 
 # Create FastAPI app
@@ -70,7 +72,15 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# CORS configurat în Nginx - nu mai adaugăm aici
+# Add CORS middleware for development
+if settings.ENVIRONMENT == "development":
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
 # Mount static files for uploads
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
