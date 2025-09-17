@@ -4,7 +4,7 @@ from .document import Document, DocumentChunk
 from .conversation import Conversation, Message
 from .admin_user import AdminUser
 from .municipality_document import MunicipalityDocument
-
+from .laws import Law, LawVersion, LawSection 
 __all__ = [
     "Municipality",
     "Document", 
@@ -12,5 +12,8 @@ __all__ = [
     "Conversation",
     "Message",
     "AdminUser",
-    "MunicipalityDocument"
+    "MunicipalityDocument",
+    "Law",
+    "LawVersion",
+    "LawSection"
 ]

@@ -26,9 +26,12 @@ import {
   Chat,
   ExitToApp,
   AccountCircle,
+  Compare,
+  CloudUpload,
 } from '@mui/icons-material';
 
 import { useAuth } from '../hooks/useAuth';
+import NotificationBell from './NotificationBell';
 
 const DRAWER_WIDTH = 240;
 
@@ -37,6 +40,8 @@ const menuItems = [
   { text: 'Primării', icon: <Business />, path: '/municipalities' },
   { text: 'Documente', icon: <Description />, path: '/documents' },
   { text: 'Conversații', icon: <Chat />, path: '/conversations' },
+  { text: 'Upload Legi', icon: <CloudUpload />, path: '/laws-upload' },
+  { text: 'Comparare Legi', icon: <Compare />, path: '/laws-comparison' },
 ];
 
 function Layout() {
@@ -121,6 +126,8 @@ function Layout() {
           <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
             Admin Panel
           </Typography>
+          
+          <NotificationBell userId={user?.id} />
           
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Typography variant="body2" sx={{ mr: 1 }}>

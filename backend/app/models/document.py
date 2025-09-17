@@ -30,8 +30,19 @@ class Document(Base):
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     
     # Relationships
-    chunks = relationship("DocumentChunk", back_populates="document", cascade="all, delete-orphan")
-    municipalities = relationship("MunicipalityDocument", back_populates="document", cascade="all, delete-orphan")
+    chunks = relationship(
+        "DocumentChunk",
+        back_populates="document",
+        cascade="all, delete-orphan"
+    )
+    municipalities = relationship(
+        "MunicipalityDocument",
+        back_populates="document",
+        cascade="all, delete-orphan"
+    )
+
+    # 🔗 Relația nouă: un Document poate fi legat la mai multe versiuni de lege
+    law_versions = relationship("LawVersion", back_populates="document")
 
 class DocumentChunk(Base):
     __tablename__ = "document_chunks"

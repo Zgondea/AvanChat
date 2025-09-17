@@ -1,3 +1,5 @@
+version: "3.9"
+
 services:
   # PostgreSQL with pgvector extension
   postgres:
@@ -14,6 +16,11 @@ services:
       - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - app_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d chat_legislativ"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
 
   # Redis for caching
   redis:
@@ -24,7 +31,7 @@ services:
     networks:
       - app_network
 
-  # Ollama for local AI model
+  # Ollama for local AI model (opțional pentru dev)
   ollama:
     image: ollama/ollama:latest
     container_name: chat_legislativ_ollama
@@ -43,30 +50,50 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     container_name: chat_legislativ_backend
-    ports:
-      - "8000:8000"
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres123@postgres:5432/chat_legislativ
-      - REDIS_URL=redis://redis:6379/0
-      - OLLAMA_URL=http://ollama:11434
-      - ENVIRONMENT=development
+      # IMPORTANT: async driver + host = numele serviciului 'postgres'
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres123@postgres:5432/chat_legislativ
+      REDIS_URL: redis://redis:6379/0
+      OLLAMA_URL: http://ollama:11434
+      ENVIRONMENT: development
+
+      # JWT config
+      JWT_SECRET_KEY: super-secret-change-me
+      JWT_ALGORITHM: HS256
+      JWT_EXPIRE_MINUTES: "60"
     depends_on:
-      - postgres
-      - redis
-      - ollama
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      ollama:
+        condition: service_started
     volumes:
       - ./backend:/app
       - uploads_data:/app/uploads
     networks:
       - app_network
+    ports:
+      - "8000:8000"
+    command: >
+      uvicorn app.main:app
+      --host 0.0.0.0
+      --port 8000
+      --reload
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8000/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
 
-  # Frontend Admin Panel (build only)
+  # Frontend Admin Panel (build-only, served by nginx)
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
       args:
+        # Browser-ul va chema prin Nginx la http://localhost/api/v1
         - REACT_APP_API_URL=http://localhost/api/v1
     container_name: chat_legislativ_frontend
     environment:
@@ -74,12 +101,13 @@ services:
     volumes:
       - frontend_build:/usr/share/nginx/html
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
     networks:
       - app_network
     restart: unless-stopped
 
-  # Nginx for reverse proxy and serving widget
+  # Nginx reverse proxy + static
   nginx:
     image: nginx:alpine
     container_name: chat_legislativ_nginx
@@ -87,7 +115,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - frontend_build:/usr/share/nginx/html
       - ./widget:/usr/share/nginx/html/widget
       - ./municipality-demo:/usr/share/nginx/html/municipality-demo
